@@ -38,7 +38,11 @@ int		ft_exec(char **env, char *input)
 	{
 		if (!(split = ft_strsplit(semicols[i], ' ')))
 			return (-1);
-		ft_lexer(split, env);
+		if (ft_lexer(split, env) == -1)
+		{
+			ft_tabdel(split);
+			return (1);
+		}
 		ft_tabdel(split);
 		i++;
 	}

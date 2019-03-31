@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/03/07 21:42:51 by gedemais         ###   ########.fr        #
+#    Updated: 2019/03/31 19:26:42 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,13 +34,15 @@ LIB_PATH = libft/
 
 LIB = libft/libft.a
 
-SRCS_NAME = 	env.c\
-		main.c\
-		init.c\
-		prompt.c\
-		lexer.c\
-		binarys.c\
-		minishell.c
+SRCS_NAME = env.c\
+			echo.c\
+			main.c\
+			init.c\
+			prompt.c\
+			lexer.c\
+			binarys.c\
+			builtins.c\
+			minishell.c
 
 SRCS_PATH = srcs/
 
