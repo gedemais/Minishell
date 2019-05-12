@@ -1,29 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/12 17:51:04 by gedemais          #+#    #+#             */
+/*   Updated: 2019/05/12 17:52:32 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-int	ft_minishell(char **environ)
+int		ft_minishell(char **environ)
 {
 	char	**env;
 	char	*input;
 	int	mode;
 
 	mode = 0;
-	if (!(input = ft_strnew(1024)))
-		return (-1);
 	if (!(env = ft_cpy_env(environ)))
 		return (-1);
 	ft_prompt(env, mode);
-	while (read(0, input, 1024) >= 0)
+	while (get_next_line(0, &input) >= 0)
 	{
-		if (input[0] != '\n' && (mode = ft_exec(env, ft_strsplit(input, '\n')[0])) == -1)
-			return (-1);
 		ft_prompt(env, mode);
-		ft_bzero(input, 1024);
-//		ft_strdel(&input); Pr GNL
+		ft_strdel(&input);
 	}
 	return (0);
 }
 
-int	main(int argc, char **argv, char **env)
+int		main(int argc, char **argv, char **env)
 {
 	(void)argv;
 	if (argc == 1)

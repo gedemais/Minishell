@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 17:34:45 by gedemais          #+#    #+#              #
-#    Updated: 2019/03/21 15:43:28 by gedemais         ###   ########.fr        #
+#    Updated: 2019/03/28 11:33:08 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,15 +106,17 @@ SRCS  =	ft_abs.c \
 		ft_swap_strs.c \
 		ft_screenlen.c
 
+INC = libft.h
+
 OBJS = $(SRCS:.c=.o)
 
-all: $(NAME) libft.h
+all: $(NAME)
 
-$(NAME) : $(OBJS)
+$(NAME) : $(OBJS) $(INC)
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
 
-./%.o: ./%.c
+./%.o: ./%.c $(INC)
 	$(CC) $(FLAGS) -c $<
 
 clean: 

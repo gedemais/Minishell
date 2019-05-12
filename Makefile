@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/03/31 19:26:42 by gedemais         ###   ########.fr        #
+#    Updated: 2019/05/12 18:00:12 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,15 +34,10 @@ LIB_PATH = libft/
 
 LIB = libft/libft.a
 
-SRCS_NAME = env.c\
-			echo.c\
-			main.c\
+SRCS_NAME = main.c\
+			env.c\
 			init.c\
-			prompt.c\
-			lexer.c\
-			binarys.c\
-			builtins.c\
-			minishell.c
+			prompt.c
 
 SRCS_PATH = srcs/
 
@@ -70,9 +65,13 @@ $(OBJS) : $(SRCS)
 		@$(CC) $(CFLAGS) -c $(SRCS)
 		@mv $(OBJS_NAME) obj/
 
+fsanitize : $(LIB)
+	@$(CC) -g3 -fsanitize=address $(SRCS) -o $(NAME) $(LIB)
+
 clean : 
 	@rm -rf obj/
 	@make clean -C $(LIB_PATH)
+	@rm -rf minishell.dSYM/
 
 fclean : clean
 	@make fclean -C $(LIB_PATH)
