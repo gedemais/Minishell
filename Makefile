@@ -35,9 +35,12 @@ LIB_PATH = libft/
 LIB = libft/libft.a
 
 SRCS_NAME = main.c\
-			env.c\
-			init.c\
-			prompt.c
+	    env.c\
+	    free.c\
+	    init.c\
+	    parser.c\
+	    builtins.c\
+	    prompt.c
 
 SRCS_PATH = srcs/
 
@@ -52,18 +55,18 @@ OBJS = $(addprefix $(OBJS_PATH), $(OBJS_NAME))
 all : $(LIB) $(NAME)
 
 $(NAME) : $(LIB) $(OBJS)
-		@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB)
-		@echo "$(GRE)Done !$(DEF)"
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB)
+	@echo "$(GRE)Done !$(DEF)"
 
 $(LIB) : $(LIB_PATH)
-		@echo "Making $(RED)Libft$(DEF)..."
-		@make re -C $(LIB_PATH)
+	@echo "Making $(RED)Libft$(DEF)..."
+	@make re -C $(LIB_PATH)
 
 $(OBJS) : $(SRCS)
-		@mkdir -p $(OBJS_PATH)
-		@echo "Making $(CYA)Minishell$(DEF)..."
-		@$(CC) $(CFLAGS) -c $(SRCS)
-		@mv $(OBJS_NAME) obj/
+	@mkdir -p $(OBJS_PATH)
+	@echo "Making $(CYA)Minishell$(DEF)..."
+	@$(CC) $(CFLAGS) -c $(SRCS)
+	@mv $(OBJS_NAME) obj/
 
 fsanitize : $(LIB)
 	@$(CC) -g3 -fsanitize=address $(SRCS) -o $(NAME) $(LIB)

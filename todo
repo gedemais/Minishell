@@ -1,0 +1,12 @@
+free en cas d'exit
+
+builtins : 
+cd
+echo
+env
+setenv
+unsetenv
+
+parser : 
+split les ;
+split les ' '

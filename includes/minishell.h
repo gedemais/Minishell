@@ -28,6 +28,13 @@
 # define PUT7 ft_putstr("There7\n");
 # define PUT8 ft_putstr("There8\n");
 
+typedef struct	s_env
+{
+	char	**env;
+	char	*input;
+	int	mode;
+}		t_env;
+
 int		ft_find_var(char **env, char *var);
 char	**ft_cpy_env(char **environ);
 void	ft_prompt(char **env, int mode);
@@ -36,5 +43,13 @@ int		ft_lexer(char **input, char **env);
 char	*ft_binarys(char *cmd, char **env);
 int		ft_echo(char **input);
 int		ft_builtins(char **input, char **env);
+
+
+int		ft_parser(t_env *env);
+
+int		ft_builtins_tree(t_env *env);
+
+t_env		*ft_free_env(t_env *env);
+
 
 #endif

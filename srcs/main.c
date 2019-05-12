@@ -14,18 +14,18 @@
 
 int		ft_minishell(char **environ)
 {
-	char	**env;
-	char	*input;
-	int	mode;
+	t_env	env;
 
-	mode = 0;
-	if (!(env = ft_cpy_env(environ)))
+	env.mode = 0;
+	if (!(env.env = ft_cpy_env(environ)))
 		return (-1);
-	ft_prompt(env, mode);
-	while (get_next_line(0, &input) >= 0)
+	ft_prompt(env.env, env.mode);
+	while (get_next_line(0, &(env.input)) >= 0)
 	{
-		ft_prompt(env, mode);
-		ft_strdel(&input);
+		if ((env.mode = ft_parser(&env)) == -1)
+			return (-1);
+		ft_prompt(env.env, env.mode);
+		ft_strdel(&(env.input));
 	}
 	return (0);
 }
