@@ -103,8 +103,7 @@ SRCS  =	ft_abs.c \
 		ft_swap.c \
 		ft_quicksort.c \
 		ft_swap_str.c \
-		ft_swap_strs.c \
-		ft_screenlen.c
+		ft_swap_strs.c
 
 INC = libft.h
 

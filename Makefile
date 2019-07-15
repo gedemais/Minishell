@@ -40,6 +40,7 @@ SRCS_NAME = main.c\
 	    init.c\
 	    parser.c\
 	    builtins.c\
+	    binarys.c\
 	    prompt.c
 
 SRCS_PATH = srcs/

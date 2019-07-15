@@ -16,6 +16,7 @@
 # include <errno.h>
 # include <signal.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <stdbool.h>
 
 # define PUT ft_putstr("There\n");
@@ -28,28 +29,39 @@
 # define PUT7 ft_putstr("There7\n");
 # define PUT8 ft_putstr("There8\n");
 
+typedef struct		s_envi
+{
+	char		*name;
+	char		*value;
+	struct s_envi	*next;
+}			t_envi;
+
 typedef struct	s_env
 {
-	char	**env;
+	t_envi	*env;
 	char	*input;
+	char	**semisplit;
+	char	**split;
 	int	mode;
 }		t_env;
 
-int		ft_find_var(char **env, char *var);
-char	**ft_cpy_env(char **environ);
-void	ft_prompt(char **env, int mode);
-int		ft_exec(char **env, char *input);
-int		ft_lexer(char **input, char **env);
-char	*ft_binarys(char *cmd, char **env);
-int		ft_echo(char **input);
-int		ft_builtins(char **input, char **env);
+t_envi		*ft_ms_lstnew(char *var);
+int		ft_ms_lst_pushfront(t_envi **lst, t_envi *new);
+t_envi		*ft_make_env(char **environ);
 
+void		ft_prompt(t_env *env, int mode);
 
 int		ft_parser(t_env *env);
 
 int		ft_builtins_tree(t_env *env);
 
-t_env		*ft_free_env(t_env *env);
+void		ft_free_env(t_envi *env);
 
+t_env		*ft_unsetenv(t_env *env, char **split);
+t_env		*ft_setenv(t_env *env, char **split);
+int		ft_env(t_envi *env);
+char		*ft_get_var_val(t_env *env, char *var);
+void		ft_free_splits(char **split);
 
+int		ft_binarys(t_env *env, char *cmd, char **params);
 #endif

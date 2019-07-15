@@ -1,7 +1,6 @@
 #include "../includes/minishell.h"
 
-
-static int	ft_short_path(char *str)
+static inline int	ft_cut_path(char *str)
 {
 	int	i;
 
@@ -11,21 +10,23 @@ static int	ft_short_path(char *str)
 	return (i + 1);
 }
 
-void		ft_prompt(char **env, int mode)
+void		ft_prompt(t_env *env, int mode)
 {
-	int	pos;
+	char	*path;
 
 	ft_putstr((mode == 0) ? L_GREEN : L_RED);
 	ft_putstr("${");
 	ft_putstr(STOP);
-	if ((pos = ft_find_var(env, "PWD")) == -1)
-		(void)env;
-	else
+	if (!(path = ft_get_var_val(env, "PWD")))
+		mode = 1;
+	else if (ft_strcmp(path, ft_get_var_val(env, "HOME")) != 0)
 	{
 		ft_putstr(GRA);
-		ft_putstr(&env[pos][ft_short_path(env[pos])]);
+		ft_putstr(&path[ft_cut_path(path)]);
 		ft_putstr(STOP);
 	}
+	else
+		ft_putchar('~');
 	ft_putstr((mode == 0) ? L_GREEN : L_RED);
 	ft_putchar('}');
 	ft_putstr(STOP);

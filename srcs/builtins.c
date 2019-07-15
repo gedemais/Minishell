@@ -2,42 +2,57 @@
 
 static inline void	ft_exit(t_env *env)
 {
-	env = ft_free_env(env);
+	ft_free_env(env->env);
 	exit (EXIT_SUCCESS);
 }
 
-t_env			*ft_cd(t_env *env)
+static inline int	ft_pwd(void)
 {
-	char	**path;
+	char	*path;
+	int	i;
 
-	if (!(path = ft_strsplit(env->input, ' ')))
-		return (NULL);
-	if (access(env->input, F_OK) == -1)
+	i = 1;
+	if (!(path = (char*)malloc(sizeof(char) * (i * 1024))))
+		return (-1);
+	while (!(getcwd(path, (i * 1024))))
 	{
-		if (errno == EACCES)
-			return (NULL);
+		i++;
+		if (!(path = ft_strrealloc(path, (i * 1024))))
+			return (-1);
 	}
-	else if (chdir(env->input))
+	ft_putstr(path);
+	ft_putchar('\n');
+	return (0);
 }
 
 int			ft_builtins_tree(t_env *env)
 {
-	if (ft_strncmp(env->input, "exit", 4) == 0
-		|| ft_strncmp(env->input, "exit ", 5) == 0)
+	static char	*builtins[NB_BUILTINS] = {"exit", "env", "setenv"}
+	if (ft_strcmp(env->split[0], "exit") == 0)
 		ft_exit(env);
-	else if (ft_strncmp(env->input, "cd", 2) == 0 || ft_strncmp(env->input, "cd ", 2) == 0)
+	else if (ft_strcmp(env->split[0], "env") == 0)
 	{
-		if (!(env = ft_cd(env))
+		if (ft_env(env->env) == -1)
 			return (-1);
 		return (1);
 	}
-	else if (ft_strncmp(env->input, "echo ", 5) == 0)
+	else if (ft_strcmp(env->split[0], "setenv") == 0)
+	{
+		if (!(env = ft_setenv(env, env->split)))
+			return (-1);
 		return (1);
-	else if (ft_strncmp(env->input, "env ", 5) == 0)
+	}
+	else if (ft_strcmp(env->split[0], "unsetenv") == 0)
+	{
+		if (!(env = ft_unsetenv(env, env->split)))
+			return (-1);
 		return (1);
-	else if (ft_strncmp(env->input, "setenv ", 5) == 0)
+	}
+	else if (ft_strcmp(env->split[0], "pwd") == 0)
+	{
+		if (ft_pwd() == -1)
+			return (-1);
 		return (1);
-	else if (ft_strncmp(env->input, "unsetenv ", 5) == 0)
-		return (1);
+	}
 	return (0);
 }

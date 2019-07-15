@@ -1,11 +1,8 @@
 #include "../includes/minishell.h"
 
-t_env	*ft_free_env(t_env *env)
+void	ft_free_env(t_envi *env)
 {
-	if (env->input)
-	{
-		ft_strdel(&(env->input));
-		env->input = NULL;
-	}
-	return (env);
+	if (env->next)
+		ft_free_env(env->next);
+	free(env);
 }

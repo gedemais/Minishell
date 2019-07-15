@@ -17,14 +17,17 @@ int		ft_minishell(char **environ)
 	t_env	env;
 
 	env.mode = 0;
-	if (!(env.env = ft_cpy_env(environ)))
+	if (!(env.env = ft_make_env(environ)))
 		return (-1);
-	ft_prompt(env.env, env.mode);
+	ft_prompt(&env, env.mode);
 	while (get_next_line(0, &(env.input)) >= 0)
 	{
 		if ((env.mode = ft_parser(&env)) == -1)
+		{
+			ft_strdel(&(env.input));
 			return (-1);
-		ft_prompt(env.env, env.mode);
+		}
+		ft_prompt(&env, env.mode);
 		ft_strdel(&(env.input));
 	}
 	return (0);
