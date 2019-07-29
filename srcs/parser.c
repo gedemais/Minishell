@@ -1,67 +1,35 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-void	ft_free_splits(char **split)
+static inline void	free_ctab(char **tab)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
-	while (split[i])
+	while (tab[i])
 	{
-		ft_strdel(&split[i]);
+		free(tab[i]);
 		i++;
 	}
-	free(split);
+	free(tab);
 }
 
-static inline int	ft_isin(char *str, char c)
+int		parser(t_env *env, char *line)
 {
-	int	ret;
-	int	i;
-
-	i = -1;
-	ret = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	ft_parser(t_env *env)
-{
-	bool	r_val;
-	int	ret;
-	int	i;
+	unsigned int	i;
+	int		ret;
 
 	i = 0;
-	ret = 0;
-	r_val = false;
-	ft_isin(env->input, ' ');
-	if (env->input[0] == '\0')
-		return (1);
-	if (!(env->semisplit = ft_strsplit(env->input, ';')))
+	if (!(env->semisplit = ft_strsplit(line, ';')))
 		return (-1);
 	while (env->semisplit[i])
 	{
-		if (!(env->split = ft_strsplit(env->semisplit[i], ' ')))
+		if (!(env->split = ft_strsplit(line, ' ')))
 			return (-1);
-		if ((ret = ft_builtins_tree(env)) == 1 && ++i)
-			continue ;
-		else if ((ret = ft_binarys(env, env->split[0], env->split)) == 1 && ++i)
-			continue ;
-		else if (ret == -1)
-			return (-1);
-		else
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(env->split[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
-			r_val = true;
-		}
+		if ((ret = builtins(env)) >= 0)
+			return (ret);
+		free_ctab(env->split);
 		i++;
 	}
-	ft_free_splits(env->semisplit);
-	return ((r_val) ? 1 : 0);
+	free_ctab(env->semisplit);
+	return (0);
 }

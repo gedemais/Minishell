@@ -28,19 +28,16 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Weverything -Wall -Werror -Wextra
 
 LIB_PATH = libft/
 
 LIB = libft/libft.a
 
 SRCS_NAME = main.c\
-	    env.c\
-	    free.c\
-	    init.c\
-	    parser.c\
-	    builtins.c\
-	    binarys.c\
+	    init_sh.c\
+	parser.c\
+	builtins.c\
 	    prompt.c
 
 SRCS_PATH = srcs/
@@ -52,6 +49,8 @@ OBJS_NAME = $(SRCS_NAME:.c=.o)
 OBJS_PATH = obj/
 
 OBJS = $(addprefix $(OBJS_PATH), $(OBJS_NAME))
+
+INC_PATH = includes/
 
 all : $(LIB) $(NAME)
 
@@ -66,11 +65,11 @@ $(LIB) : $(LIB_PATH)
 $(OBJS) : $(SRCS)
 	@mkdir -p $(OBJS_PATH)
 	@echo "Making $(CYA)Minishell$(DEF)..."
-	@$(CC) $(CFLAGS) -c $(SRCS)
+	@$(CC) $(CFLAGS) -I $(INC_PATH) -c $(SRCS)
 	@mv $(OBJS_NAME) obj/
 
 fsanitize : $(LIB)
-	@$(CC) -g3 -fsanitize=address $(SRCS) -o $(NAME) $(LIB)
+	@$(CC) -g3 -fsanitize=address -I $(INC_PATH) $(SRCS) -o $(NAME) $(LIB)
 
 clean : 
 	@rm -rf obj/

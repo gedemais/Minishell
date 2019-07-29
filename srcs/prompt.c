@@ -1,36 +1,44 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-static inline int	ft_cut_path(char *str)
+static inline int	get_var_index(char **env, const char *var)
 {
-	int	i;
+	size_t		len;
+	unsigned int	i;
 
-	i = ft_strlen(str);
-	while (str[i] != '/')
-		i--;
-	return (i + 1);
+	i = 0;
+	len = ft_strlen(var);
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], var, len) == 0 && env[i][len] == '=')
+			return ((int)i);
+		i++;
+	}
+	return (-1);
 }
 
-void		ft_prompt(t_env *env, int mode)
+static inline char	*make_path(char *path)
 {
-	char	*path;
+	unsigned int	i;
 
-	ft_putstr((mode == 0) ? L_GREEN : L_RED);
-	ft_putstr("${");
+	i = 0;
+	while (path[i])
+		i++;
+	while (path[i] != '/' && i > 0)
+		i--;
+	return (&path[i + 1]);
+}
+
+int	prompt(t_env *env, int state)
+{
+	ft_putstr(state == 0 ? L_GREEN : L_RED);
+	ft_putchar('{');
 	ft_putstr(STOP);
-	if (!(path = ft_get_var_val(env, "PWD")))
-		mode = 1;
-	else if (ft_strcmp(path, ft_get_var_val(env, "HOME")) != 0)
-	{
-		ft_putstr(GRA);
-		ft_putstr(&path[ft_cut_path(path)]);
-		ft_putstr(STOP);
-	}
-	else
-		ft_putchar('~');
-	ft_putstr((mode == 0) ? L_GREEN : L_RED);
+	ft_putstr(make_path(env->env[get_var_index(env->env, "PWD")]));
+	ft_putstr(state == 0 ? L_GREEN : L_RED);
 	ft_putchar('}');
 	ft_putstr(STOP);
 	ft_putstr(GRA);
 	ft_putstr("-> ");
 	ft_putstr(STOP);
+	return (0);
 }

@@ -5,70 +5,63 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/03 23:25:51 by gedemais          #+#    #+#             */
-/*   Updated: 2019/02/03 23:26:01 by gedemais         ###   ########.fr       */
+/*   Created: 2018/09/12 10:06:00 by gedemais          #+#    #+#             */
+/*   Updated: 2019/01/14 12:51:57 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_lenb(long long nb, int lenb)
+static size_t	ft_power_s(size_t nb, int power)
 {
-	int ret;
-
-	ret = 0;
-	while (nb >= (long long)lenb)
-	{
-		ret++;
-		nb /= (long long)lenb;
-	}
-	return (ret + 1);
+	if (power == 0)
+		return (1);
+	if (power < 0)
+		return (0);
+	return (nb * ft_power_s(nb, power - 1));
 }
 
-char	*ft_strrev(char *str)
+static size_t	ft_getval(char *nbr, char *base_from)
 {
+	size_t	val;
 	int		i;
 	int		j;
-	char	c;
+	size_t	len;
 
-	i = ft_strlen(str) - 1;
-	j = 0;
-	while (j < i)
+	len = ft_strlen(nbr);
+	val = 0;
+	i = -1;
+	while (nbr[++i])
 	{
-		c = str[i];
-		str[i] = str[j];
-		str[j] = c;
-		i--;
-		j++;
+		j = -1;
+		while (nbr[i] != base_from[++j])
+			;
+		val += j * (len - i ? ft_power_s(10, len - i - 1) : 1);
 	}
-	return (str);
+	return (val);
 }
 
-char	*ft_convert_base(long long nb, char *base)
+char			*ft_convert_base(char *nbr, char *base_from, char *base_to)
 {
-	int				i;
-	unsigned int	lenb;
-	char			*ret;
-	int				sign;
+	char	*res;
+	size_t	val;
+	size_t	len_base;
+	int		i;
 
+	val = ft_getval(nbr, base_from);
+	len_base = ft_strlen(base_to);
+	res = (char*)malloc(sizeof(char) * (32));
 	i = 0;
-	lenb = ft_strlen(base);
-	sign = 0;
-	if (nb < 0)
-	{
-		sign = -1;
-		nb = -nb;
-	}
-	if (!(ret = (char*)malloc(sizeof(char*) * ft_lenb(nb, lenb) + 1)))
-		return (NULL);
-	while (nb >= (long long)lenb)
-	{
-		ret[i] = base[nb % lenb];
-		i++;
-		nb /= lenb;
-	}
-	ret[i] = base[nb];
-	ret[i + 1] = (sign == -1) ? '-' : 0;
-	ret[i + 2] = 0;
-	return (ft_strrev(ret));
+	if (val)
+		while (val > 0)
+		{
+			res[i] = base_to[val % len_base];
+			val /= len_base;
+			++i;
+		}
+	else
+		res[i++] = base_to[0];
+	res[i] = '\0';
+	res = ft_strrev(res);
+	return (res);
 }

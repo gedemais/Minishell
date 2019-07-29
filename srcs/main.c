@@ -1,47 +1,38 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/12 17:51:04 by gedemais          #+#    #+#             */
-/*   Updated: 2019/05/12 17:52:32 by gedemais         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "minishell.h"
 
-#include "../includes/minishell.h"
-
-int		ft_minishell(char **environ)
+static inline int	minishell(char **environment)
 {
 	t_env	env;
+	int	state;
 
-	env.mode = 0;
-	if (!(env.env = ft_make_env(environ)))
+	state = 0; // everything FINE
+	if (init_sh(&env, environment) != 0)
 		return (-1);
-	ft_prompt(&env, env.mode);
-	while (get_next_line(0, &(env.input)) >= 0)
+	prompt(&env, state);
+	while (get_next_line(0, &(env.input)))
 	{
-		if ((env.mode = ft_parser(&env)) == -1)
-		{
-			ft_strdel(&(env.input));
-			return (-1);
-		}
-		ft_prompt(&env, env.mode);
+		state = parser(&env, env.input);
 		ft_strdel(&(env.input));
+		prompt(&env, state);
+		env.input = NULL;
+		if (state == -1)
+		{
+		//	free_env(env);
+			return (1);
+		}
 	}
 	return (0);
 }
 
-int		main(int argc, char **argv, char **env)
+int			main(int argc, char **argv, char **env)
 {
 	(void)argv;
-	if (argc == 1)
+	if (argc > 2)
 	{
-		if (ft_minishell(env) == -1)
-			return (1);
+		ft_putstr_fd("No args available\n", 2);
+		return (1);
 	}
-	else
-		ft_putstr_fd("Usage : ./minishell\n", 2);
+	if (minishell(env) != 0)
+		return (1);
 	return (0);
 }

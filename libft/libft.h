@@ -6,7 +6,7 @@
 /*   By: gedemais <gedemais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 09:05:11 by gedemais          #+#    #+#             */
-/*   Updated: 2019/03/28 11:38:50 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/06/08 13:05:23 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/ioctl.h>
-# include <dirent.h>
+# include <fcntl.h>
+# include <math.h>
 
 /*
 ** Strings functions
@@ -47,7 +47,7 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
-char				*ft_strjoin(char *s1, char *s2);
+char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_strrev(char *str);
@@ -56,9 +56,7 @@ char				*ft_itoa(long long int n);
 int					ft_strfind(const char *str, int c);
 char				*ft_strrealloc(char *s, size_t size);
 int					get_next_line(const int fd, char **line);
-char				*ft_convert_base(long long nb, char *base);
-void				ft_swap_strs(char *s1, char *s2);
-void				ft_swap_str(char **s1, char **s2);
+char				*ft_convert_base(char *nbr, char *base_from, char *base_to);
 /*
 ** Strings functions
 */
@@ -117,16 +115,16 @@ void				ft_memdel(void **ap);
 int					ft_abs(int nb);
 int					ft_nb_len(long long int nb);
 void				ft_swap(int *a, int *b);
-int					ft_quicksort(int *tab, int start, int end);
-
-int					ft_screenlen(void);
+int					ft_constrain(int val, int min, int max);
+double				ft_to_radians(double degree);
+double				ft_to_degrees(double degree);
 
 /*
 ** Maths functions
 */
 
 /*
-** Linked Lists functions & structs
+** Chained Lists functions & structs
 */
 typedef struct		s_list
 {
@@ -142,8 +140,6 @@ void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 /*
-** Linked Lists functions & structs
+** Chained Lists functions & structs
 */
-int					ft_screenlen(void);
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 19:44:15 by gedemais          #+#    #+#             */
-/*   Updated: 2019/03/21 15:46:17 by gedemais         ###   ########.fr       */
+/*   Updated: 2018/11/27 17:28:09 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@ void	ft_pctab(char **tab)
 	i = 0;
 	while (tab[i])
 	{
-		ft_putstr("tab[");
-		ft_putnbr(i);
-		ft_putstr("] = ");
 		ft_putendl(tab[i]);
 		i++;
 	}

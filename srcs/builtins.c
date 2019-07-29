@@ -1,58 +1,36 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-static inline void	ft_exit(t_env *env)
+static inline int	ft_pwd(t_env *env)
 {
-	ft_free_env(env->env);
-	exit (EXIT_SUCCESS);
-}
+	char	*buff;
+	size_t	buff_size;
 
-static inline int	ft_pwd(void)
-{
-	char	*path;
-	int	i;
-
-	i = 1;
-	if (!(path = (char*)malloc(sizeof(char) * (i * 1024))))
+	(void)env;
+	buff_size = 1024;
+	if (!(buff = ft_strnew(buff_size)))
 		return (-1);
-	while (!(getcwd(path, (i * 1024))))
+	while (getcwd(buff, buff_size) == NULL)
 	{
-		i++;
-		if (!(path = ft_strrealloc(path, (i * 1024))))
+		if (errno != ERANGE)
+			return (-1);
+		buff_size *= 2;
+		if (!(buff = ft_strrealloc(buff, buff_size)))
 			return (-1);
 	}
-	ft_putstr(path);
-	ft_putchar('\n');
+	ft_putendl(buff);
 	return (0);
 }
 
-int			ft_builtins_tree(t_env *env)
+int		builtins(t_env *env)
 {
-	static char	*builtins[NB_BUILTINS] = {"exit", "env", "setenv"}
+	unsigned int	i;
+
+	i = 0;
 	if (ft_strcmp(env->split[0], "exit") == 0)
-		ft_exit(env);
-	else if (ft_strcmp(env->split[0], "env") == 0)
-	{
-		if (ft_env(env->env) == -1)
-			return (-1);
-		return (1);
-	}
-	else if (ft_strcmp(env->split[0], "setenv") == 0)
-	{
-		if (!(env = ft_setenv(env, env->split)))
-			return (-1);
-		return (1);
-	}
-	else if (ft_strcmp(env->split[0], "unsetenv") == 0)
-	{
-		if (!(env = ft_unsetenv(env, env->split)))
-			return (-1);
-		return (1);
-	}
+		exit (EXIT_SUCCESS);
 	else if (ft_strcmp(env->split[0], "pwd") == 0)
-	{
-		if (ft_pwd() == -1)
-			return (-1);
-		return (1);
-	}
-	return (0);
+		return (ft_pwd(env));
+//	else if (ft_strcmp(env->split[0], "env") == 0)
+//		return (ft_env(env));
+	return (-1);
 }

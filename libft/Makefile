@@ -6,9 +6,11 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 17:34:45 by gedemais          #+#    #+#              #
-#    Updated: 2019/03/28 11:33:08 by gedemais         ###   ########.fr        #
+#    Updated: 2019/06/08 13:03:26 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+.PHONY: all, $(NAME), $(OBJS), clean, fclean, re
 
 DEF = \033[0m
 GRA = \033[1m
@@ -24,15 +26,16 @@ CYA = \033[36m
 WHI = \033[37m
 ORG = \033[1;31m
 
-
 NAME = libft.a
 
 CC = @gcc
 
 FLAGS = -Wall -Werror -Wextra
 
-SRCS  =	ft_abs.c \
-		ft_atoi.c \
+OFLAGS = -O3 -Ofast -march=native
+
+SRCS  =	ft_atoi.c \
+		ft_abs.c\
 		ft_bzero.c \
 		ft_isalnum.c \
 		ft_isalpha.c \
@@ -102,27 +105,29 @@ SRCS  =	ft_abs.c \
 		ft_strndup.c \
 		ft_swap.c \
 		ft_quicksort.c \
-		ft_swap_str.c \
-		ft_swap_strs.c
+		ft_constrain.c \
+		ft_to_degrees.c \
+		ft_to_radians.c
 
-INC = libft.h
+OBJS=$(SRCS:.c=.o)
 
-OBJS = $(SRCS:.c=.o)
+all: $(NAME) libft.h
 
-all: $(NAME)
-
-$(NAME) : $(OBJS) $(INC)
+$(NAME) : $(OBJS)
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
+	@echo "$(GRE)Done !$(DEF)"
 
-./%.o: ./%.c $(INC)
-	$(CC) $(FLAGS) -c $<
+./%.o: ./%.c
+	$(CC) $(FLAGS) $(OFLAGS) -c $<
 
 clean: 
 	@rm -rf $(OBJS)
+	@echo "$(ORG)Objects files $(DEF)deleted."
 
 fclean: clean
 	@rm -rf $(NAME)
+	@echo "$(YEL)libft.a$(DEF) deleted."
 
 re: fclean all
 

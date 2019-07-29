@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 18:45:05 by gedemais          #+#    #+#             */
-/*   Updated: 2019/02/06 03:59:32 by gedemais         ###   ########.fr       */
+/*   Updated: 2018/12/19 18:58:05 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ static int	ft_partition(int *tab, int start, int end)
 	}
 	while (i < end - 1 && j < end - 1)
 	{
-		if (tab[j] <= tab[pivot] && ++i)
+		if (tab[j] <= tab[pivot])
+		{
+			i++;
 			ft_swap(&tab[i], &tab[j]);
+		}
 		j++;
 	}
 	ft_swap(&tab[i + 1], &tab[pivot]);

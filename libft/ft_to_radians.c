@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_swap_str.c                                      :+:      :+:    :+:   */
+/*   ft_to_radians.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/21 15:34:50 by gedemais          #+#    #+#             */
-/*   Updated: 2019/03/21 15:36:50 by gedemais         ###   ########.fr       */
+/*   Created: 2019/01/14 11:29:42 by gedemais          #+#    #+#             */
+/*   Updated: 2019/01/14 12:59:24 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_swap_str(char **s1, char **s2)
+double	ft_to_radians(double degree)
 {
-	char	*tmp;
-
-	tmp = *s1;
-	*s1 = *s2;
-	*s2 = tmp;
+	return (degree / (180.0 / M_PI));
 }

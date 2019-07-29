@@ -9,15 +9,21 @@
 # define GRA "\033[1m"
 # define STOP "\033[0m"
 
-
 # include <stdio.h>
-
 # include "../libft/libft.h"
 # include <errno.h>
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+
+typedef struct	s_env
+{
+	char	**env;
+	char	*input;
+	char	**semisplit;
+	char	**split;
+}		t_env;
 
 # define PUT ft_putstr("There\n");
 # define PUT1 ft_putstr("There1\n");
@@ -29,39 +35,8 @@
 # define PUT7 ft_putstr("There7\n");
 # define PUT8 ft_putstr("There8\n");
 
-typedef struct		s_envi
-{
-	char		*name;
-	char		*value;
-	struct s_envi	*next;
-}			t_envi;
-
-typedef struct	s_env
-{
-	t_envi	*env;
-	char	*input;
-	char	**semisplit;
-	char	**split;
-	int	mode;
-}		t_env;
-
-t_envi		*ft_ms_lstnew(char *var);
-int		ft_ms_lst_pushfront(t_envi **lst, t_envi *new);
-t_envi		*ft_make_env(char **environ);
-
-void		ft_prompt(t_env *env, int mode);
-
-int		ft_parser(t_env *env);
-
-int		ft_builtins_tree(t_env *env);
-
-void		ft_free_env(t_envi *env);
-
-t_env		*ft_unsetenv(t_env *env, char **split);
-t_env		*ft_setenv(t_env *env, char **split);
-int		ft_env(t_envi *env);
-char		*ft_get_var_val(t_env *env, char *var);
-void		ft_free_splits(char **split);
-
-int		ft_binarys(t_env *env, char *cmd, char **params);
+int		prompt(t_env *env, int state);
+int		init_sh(t_env *env, char **environment);
+int		parser(t_env *env, char *line);
+int		builtins(t_env *env);
 #endif
