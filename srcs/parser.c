@@ -1,35 +1,15 @@
 #include "minishell.h"
 
-static inline void	free_ctab(char **tab)
+int	parser(t_env *env)
 {
-	unsigned int	i;
+	int	ret;
 
-	i = 0;
-	while (tab[i])
+	if ((ret = builtins(env, env->input)) != 0)
 	{
-		free(tab[i]);
-		i++;
+		if (ret == -1)
+			return (1);
+		return (0);
 	}
-	free(tab);
-}
-
-int		parser(t_env *env, char *line)
-{
-	unsigned int	i;
-	int		ret;
-
-	i = 0;
-	if (!(env->semisplit = ft_strsplit(line, ';')))
-		return (-1);
-	while (env->semisplit[i])
-	{
-		if (!(env->split = ft_strsplit(line, ' ')))
-			return (-1);
-		if ((ret = builtins(env)) >= 0)
-			return (ret);
-		free_ctab(env->split);
-		i++;
-	}
-	free_ctab(env->semisplit);
-	return (0);
+	ft_putstr_fd("command not found\n", 2);
+	return (1);
 }

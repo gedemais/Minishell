@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/05/12 18:00:12 by gedemais         ###   ########.fr        #
+#    Updated: 2019/09/16 08:43:13 by demaisonc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,8 +36,9 @@ LIB = libft/libft.a
 
 SRCS_NAME = main.c\
 	    init_sh.c\
-	parser.c\
-	builtins.c\
+	    builtins.c\
+	    env_builtins.c\
+	    parser.c\
 	    prompt.c
 
 SRCS_PATH = srcs/

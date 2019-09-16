@@ -5,21 +5,16 @@ static inline int	minishell(char **environment)
 	t_env	env;
 	int	state;
 
-	state = 0; // everything FINE
+	(void)environment;
 	if (init_sh(&env, environment) != 0)
 		return (-1);
+	state = 0; // everything FINE
 	prompt(&env, state);
 	while (get_next_line(0, &(env.input)))
 	{
-		state = parser(&env, env.input);
+		state = parser(&env);
 		ft_strdel(&(env.input));
 		prompt(&env, state);
-		env.input = NULL;
-		if (state == -1)
-		{
-		//	free_env(env);
-			return (1);
-		}
 	}
 	return (0);
 }

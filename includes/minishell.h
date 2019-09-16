@@ -9,6 +9,8 @@
 # define GRA "\033[1m"
 # define STOP "\033[0m"
 
+# define NB_BUILTINS 6
+
 # include <stdio.h>
 # include "../libft/libft.h"
 # include <errno.h>
@@ -16,27 +18,30 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+# include <limits.h>
 
-typedef struct	s_env
+typedef struct		s_env_lst t_env_lst;
+
+struct			s_env_lst
 {
-	char	**env;
-	char	*input;
-	char	**semisplit;
-	char	**split;
-}		t_env;
+	char		*name;
+	char		*val;
+	t_env_lst	*next;
+};
 
-# define PUT ft_putstr("There\n");
-# define PUT1 ft_putstr("There1\n");
-# define PUT2 ft_putstr("There2\n");
-# define PUT3 ft_putstr("There3\n");
-# define PUT4 ft_putstr("There4\n");
-# define PUT5 ft_putstr("There5\n");
-# define PUT6 ft_putstr("There6\n");
-# define PUT7 ft_putstr("There7\n");
-# define PUT8 ft_putstr("There8\n");
+typedef struct		s_env
+{
+	char		*input;
+	t_env_lst	*env;
+}			t_env;
 
-int		prompt(t_env *env, int state);
-int		init_sh(t_env *env, char **environment);
-int		parser(t_env *env, char *line);
-int		builtins(t_env *env);
+
+
+int			prompt(t_env *env, int state);
+int			init_sh(t_env *env, char **environment);
+int			parser(t_env *env);
+int			builtins(t_env *env, char *input);
+int			ft_env(t_env *env);
+int			ft_setenv(t_env *env);
+int			ft_unsetenv(t_env *env);
 #endif
