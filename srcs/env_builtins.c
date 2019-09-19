@@ -38,7 +38,8 @@ static inline int	modify(t_env *env, char *var, char *new_val)
 
 int	ft_setenv(t_env *env)
 {
-	char		**av;
+	char			**av;
+	char			*tmp; // strjoin pour le lstnew
 	unsigned int	i;
 
 	i = 0;
@@ -50,7 +51,8 @@ int	ft_setenv(t_env *env)
 		return (0);
 	if (modify(env, av[1], av[2]) == 1)
 		return (0);
-	
+	else if (t_env_lst_pushfront(&env->env, t_env_lstnew()))
+		return (-1);
 	return (0);
 }
 

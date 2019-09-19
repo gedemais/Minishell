@@ -31,9 +31,10 @@ struct			s_env_lst
 
 typedef struct		s_env
 {
-	char		*input;
-	t_env_lst	*env;
-}			t_env;
+	t_env_lst		*env;
+	char			*input;
+	char			**semisplit;
+}					t_env;
 
 
 
