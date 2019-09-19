@@ -31,18 +31,29 @@ struct			s_env_lst
 
 typedef struct		s_env
 {
-	t_env_lst		*env;
-	char			*input;
-	char			**semisplit;
-}					t_env;
+	t_env_lst	*env;
+	char		*input;
+	char		**semisplit;
+	char		**split;
+	char		**environment;
+}			t_env;
 
 
 
 int			prompt(t_env *env, int state);
 int			init_sh(t_env *env, char **environment);
 int			parser(t_env *env);
-int			builtins(t_env *env, char *input);
-int			ft_env(t_env *env);
-int			ft_setenv(t_env *env);
-int			ft_unsetenv(t_env *env);
+
+
+int			builtins(t_env *env);
+t_env_lst		*get_var(t_env_lst *env, char *name);
+int			exec_binary(t_env *env);
+char			*re_assemble(char *s1, char *s2, char *s3);
+unsigned int		env_len(t_env_lst *env);
+char			**refresh_env(t_env_lst *env, char **environment);
+
+/*
+** Free
+*/
+int			free_ctab(char **tab);
 #endif

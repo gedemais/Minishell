@@ -5,10 +5,10 @@ static inline int	minishell(char **environment)
 	t_env	env;
 	int	state;
 
-	(void)environment;
+	ft_memset(&env, 0, sizeof(t_env));
 	if (init_sh(&env, environment) != 0)
 		return (-1);
-	state = 0; // everything FINE
+	state = 0;
 	prompt(&env, state);
 	while (get_next_line(0, &(env.input)))
 	{

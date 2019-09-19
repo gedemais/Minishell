@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static inline t_env_lst	*get_var(t_env_lst *env, char *name)
+t_env_lst	*get_var(t_env_lst *env, char *name)
 {
 	t_env_lst		*tmp;
 	unsigned int	i;

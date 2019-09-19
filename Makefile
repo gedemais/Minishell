@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/09/16 08:43:13 by demaisonc        ###   ########.fr        #
+#    Updated: 2019/09/19 17:28:06 by demaisonc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,11 @@ LIB = libft/libft.a
 
 SRCS_NAME = main.c\
 	    init_sh.c\
-	    builtins.c\
-	    env_builtins.c\
 	    parser.c\
+	    builtins.c\
+	    exec_binary.c\
+	    free.c\
+	    utils.c\
 	    prompt.c
 
 SRCS_PATH = srcs/
@@ -70,7 +72,7 @@ $(OBJS) : $(SRCS)
 	@mv $(OBJS_NAME) obj/
 
 fsanitize : $(LIB)
-	@$(CC) -g3 -fsanitize=address -I $(INC_PATH) $(SRCS) -o $(NAME) $(LIB)
+	@$(CC) -fsanitize=address -I $(INC_PATH) $(SRCS) -o $(NAME) $(LIB)
 
 clean : 
 	@rm -rf obj/

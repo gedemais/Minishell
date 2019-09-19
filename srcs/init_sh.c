@@ -56,5 +56,7 @@ int			init_sh(t_env *env, char **environment)
 {
 	if (!(env->env = init_env_lst(environment)))
 		return (-1);
+	if (!(env->environment = refresh_env(env->env, env->environment)))
+		return (-1);
 	return (0);
 }
