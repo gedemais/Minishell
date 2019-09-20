@@ -29,8 +29,8 @@ static inline int		t_env_lst_pushfront(t_env_lst **lst, t_env_lst *new)
 	tmp = *lst;
 	while (tmp->next)
 		tmp = tmp->next;
-	new->next = NULL;
 	tmp->next = new;
+	new->next = NULL;
 	return (0);
 }
 
@@ -56,6 +56,7 @@ int			init_sh(t_env *env, char **environment)
 {
 	if (!(env->env = init_env_lst(environment)))
 		return (-1);
+	env->environment = NULL;
 	if (!(env->environment = refresh_env(env->env, env->environment)))
 		return (-1);
 	return (0);

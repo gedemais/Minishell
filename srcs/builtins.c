@@ -1,15 +1,17 @@
 #include "minishell.h"
 
-static inline int	ft_exit(t_env *env)
+static inline int	ft_exit(t_env *env, char **av)
 {
-	(void)env;
+	(void)av;
+	free_env(env);
 	exit(EXIT_FAILURE);
 }
 
-static inline int	ft_env(t_env *env)
+static inline int	ft_env(t_env *env, char **av)
 {
 	t_env_lst	*tmp;
 
+	(void)av;
 	tmp = env->env;
 	while (tmp)
 	{
@@ -25,8 +27,8 @@ int	builtins(t_env *env)
 {
 	char	*b_names[NB_BUILTINS] = {"env", "setenv", "unsetenv", "exit",
 					"echo", "cd"};
-	int	(*b_func[NB_BUILTINS])(t_env*) = {ft_env, /*ft_setenv*/NULL,
-					/*ft_unsetenv*/NULL, ft_exit, /*ft_echo*/NULL, /*ft_cd*/NULL};
+	int	(*b_func[NB_BUILTINS])(t_env*, char**) = {ft_env, /*ft_setenv*/NULL,
+					ft_unsetenv, ft_exit, /*ft_echo*/NULL, /*ft_cd*/NULL};
 	unsigned int	i;
 	int		ret;
 
@@ -35,7 +37,7 @@ int	builtins(t_env *env)
 	{
 		if (ft_strcmp(b_names[i], env->split[0]) == 0)
 		{
-			ret = b_func[i](env);
+			ret = b_func[i](env, env->split);
 			if (ret == -1)
 				return (-1);
 			return (ret == 0 ? 1 : 2);

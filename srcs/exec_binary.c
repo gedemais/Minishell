@@ -2,30 +2,33 @@
 
 static inline char	*find_binary(t_env *env, char **av)
 {
-	char		**paths;
+	char		**p;
 	t_env_lst	*path;
 	char		*dest;
 	unsigned int	i;
 
 	i = 0;
+	if (access(av[0], X_OK) == 0)
+		return (ft_strdup(av[0]));
 	if (!(path = get_var(env->env, "PATH"))
-		|| !(paths = ft_strsplit(path->val, ':')))
+		|| !(p = ft_strsplit(path->val, ':')))
 		return (NULL);
-	while (paths[i])
+	while (p[i])
 	{
-		if (!(dest = re_assemble(paths[i], "/", av[0])))
+		if (!(dest = re_assemble(p[i], "/", av[0])) && !free_ctab(p))
 			return (NULL);
 		if (access(dest, X_OK) == 0)
 		{
-			free_ctab(paths);
+			free_ctab(p);
 			return (dest);
 		}
 		free(dest);
 		i++;
 	}
+	free_ctab(p);
 	return (NULL);
 }
-/*
+
 static inline pid_t	create_process(void)
 {
 	pid_t		pid;
@@ -38,10 +41,11 @@ static inline pid_t	create_process(void)
 		pid = fork();
 	}
 	return (pid);
-}*/
+}
 
 char			**refresh_env(t_env_lst *env, char **environment)
 {
+	char		**new;
 	t_env_lst	*tmp;
 	unsigned int	len;
 	unsigned int	i;
@@ -51,34 +55,38 @@ char			**refresh_env(t_env_lst *env, char **environment)
 	len = env_len(env);
 	if (environment)
 		free_ctab(environment);
-	if (!(environment = (char**)malloc(sizeof(char*) * (len + 1))))
+	if (!(new = (char**)malloc(sizeof(char*) * (len + 1))))
 		return (NULL);
-	while (i < len)
+	while (i < len && tmp)
 	{
-		if (!(environment[i] = re_assemble(tmp->name, "=", tmp->val)))
+		if (!(new[i] = re_assemble(tmp->name, "=", tmp->val)))
 			return (NULL);
 		tmp = tmp->next;
 		i++;
 	}
-	environment[i] = NULL;
-	return (environment);
+	new[i] = NULL;
+	return (new);
 }
 
 int			exec_binary(t_env *env)
 {
 	pid_t		pid;
 	unsigned int	i;
+	int		status;
 	char		*path;
 
 	i = 0;
+	status = 0;
 	if (!(path = find_binary(env, env->split)))
 		return (2);
 	if (!(env->environment = refresh_env(env->env, env->environment)))
 		return (-1);
-	pid = fork();
+	if ((pid = create_process()) == -1)
+		return (-1);
 	if (pid == 0)
 		execve(path, env->split, env->environment);
-	if (wait(NULL) == -1)
+	if (wait(&status) == -1)
 		return (-1);
-	return (1);
+	free(path);
+	return (WIFEXITED(status));
 }

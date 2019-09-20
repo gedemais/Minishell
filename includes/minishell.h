@@ -38,8 +38,6 @@ typedef struct		s_env
 	char		**environment;
 }			t_env;
 
-
-
 int			prompt(t_env *env, int state);
 int			init_sh(t_env *env, char **environment);
 int			parser(t_env *env);
@@ -52,8 +50,12 @@ char			*re_assemble(char *s1, char *s2, char *s3);
 unsigned int		env_len(t_env_lst *env);
 char			**refresh_env(t_env_lst *env, char **environment);
 
+int			ft_unsetenv(t_env *env, char **av);
+
 /*
 ** Free
 */
 int			free_ctab(char **tab);
+int			free_environment(t_env_lst *env);
+int			free_env(t_env *env);
 #endif

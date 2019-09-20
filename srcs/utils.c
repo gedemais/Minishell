@@ -17,8 +17,8 @@ unsigned int	env_len(t_env_lst *env)
 
 char		*re_assemble(char *s1, char *s2, char *s3)
 {
-	char	*tmp;
 	char	*dest;
+	char	*tmp;
 
 	if (!(tmp = ft_strjoin(s1, s2)))
 		return (NULL);
