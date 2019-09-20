@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/09/20 13:46:54 by demaisonc        ###   ########.fr        #
+#    Updated: 2019/09/20 17:19:35 by demaisonc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRCS_NAME = main.c\
 	    builtins.c\
 	    exec_binary.c\
 	    setenv.c\
+	    cd.c\
 	    free.c\
 	    utils.c\
 	    prompt.c

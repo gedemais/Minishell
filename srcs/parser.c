@@ -9,9 +9,10 @@ static inline int	parse_cmd(t_env *env, char *cmd)
 	if (!(env->split = ft_strsplit(cmd, ' ')))
 		return (-1);
 	ret = builtins(env);
+//	printf("builtins = %d\n", ret);
 	if ((ret == -1 || ret == 1) && free_ctab(env->split) == 0)
 		return (ret == -1 ? -1 : 0);
-	else if (ret == 2 && free_ctab(env->split))
+	else if (ret == 2 && free_ctab(env->split) == 0)
 		return (1);
 	ret = exec_binary(env);
 	if ((ret == -1 || ret == 1) && free_ctab(env->split) == 0)

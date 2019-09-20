@@ -27,8 +27,8 @@ int	builtins(t_env *env)
 {
 	char	*b_names[NB_BUILTINS] = {"env", "setenv", "unsetenv", "exit",
 					"echo", "cd"};
-	int	(*b_func[NB_BUILTINS])(t_env*, char**) = {ft_env, /*ft_setenv*/NULL,
-					ft_unsetenv, ft_exit, /*ft_echo*/NULL, /*ft_cd*/NULL};
+	int	(*b_func[NB_BUILTINS])(t_env*, char**) = {ft_env, ft_setenv,
+					ft_unsetenv, ft_exit, /*ft_echo*/NULL, ft_cd};
 	unsigned int	i;
 	int		ret;
 

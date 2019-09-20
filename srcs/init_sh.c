@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static inline t_env_lst	*t_env_lstnew(char *var)
+t_env_lst	*t_env_lstnew(char *var)
 {
 	t_env_lst	*new;
 	unsigned int	i;
@@ -20,7 +20,7 @@ static inline t_env_lst	*t_env_lstnew(char *var)
 	return (new);
 }
 
-static inline int		t_env_lst_pushfront(t_env_lst **lst, t_env_lst *new)
+int		t_env_lst_pushfront(t_env_lst **lst, t_env_lst *new)
 {
 	t_env_lst	*tmp;
 

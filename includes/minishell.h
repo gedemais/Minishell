@@ -11,6 +11,10 @@
 
 # define NB_BUILTINS 6
 
+# define SETENV_ERR_0 "setenv: variable name must not contain = character.\n"
+# define CD_ERR_EACCES "cd: permission denied: "
+# define CD_ERR_ENOENT "cd: no such file or directory: "
+
 # include <stdio.h>
 # include "../libft/libft.h"
 # include <errno.h>
@@ -51,6 +55,13 @@ unsigned int		env_len(t_env_lst *env);
 char			**refresh_env(t_env_lst *env, char **environment);
 
 int			ft_unsetenv(t_env *env, char **av);
+int			ft_setenv(t_env *env, char **av);
+int			ft_cd(t_env *env, char **av);
+
+t_env_lst		*t_env_lstnew(char *var);
+int			t_env_lst_pushfront(t_env_lst **lst, t_env_lst *new);
+int			replace_value(t_env_lst *env, char *name, char *val);
+
 
 /*
 ** Free
