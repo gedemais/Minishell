@@ -56,6 +56,7 @@ char			*re_assemble(char *s1, char *s2, char *s3);
 unsigned int		env_len(t_env_lst *env);
 char			**refresh_env(t_env_lst *env, char **environment);
 
+int			ft_env(t_env *env, char **av);
 int			ft_unsetenv(t_env *env, char **av);
 int			ft_setenv(t_env *env, char **av);
 int			ft_cd(t_env *env, char **av);
@@ -65,6 +66,7 @@ t_env_lst		*t_env_lstnew(char *var);
 int			t_env_lst_pushfront(t_env_lst **lst, t_env_lst *new);
 int			replace_value(t_env_lst *env, char *name, char *val);
 
+//char			**expansions(t_env *env, char **split);
 
 /*
 ** Free

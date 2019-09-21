@@ -7,7 +7,7 @@ static inline int	ft_exit(t_env *env, char **av)
 	exit(EXIT_FAILURE);
 }
 
-static inline int	ft_env(t_env *env, char **av)
+int	ft_env(t_env *env, char **av)
 {
 	t_env_lst	*tmp;
 
@@ -33,6 +33,8 @@ int	builtins(t_env *env)
 	int		ret;
 
 	i = 0;
+	if (!env->split[0])
+		return (1);
 	while (i < NB_BUILTINS)
 	{
 		if (ft_strcmp(b_names[i], env->split[0]) == 0)

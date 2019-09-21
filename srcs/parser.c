@@ -7,9 +7,9 @@ static inline int	parse_cmd(t_env *env, char *cmd)
 
 	i = 0;
 	if (!(env->split = ft_strsplit(cmd, ' ')))
+	//	|| !(env->split = expansions(env->split)))
 		return (-1);
 	ret = builtins(env);
-//	printf("builtins = %d\n", ret);
 	if ((ret == -1 || ret == 1) && free_ctab(env->split) == 0)
 		return (ret == -1 ? -1 : 0);
 	else if (ret == 2 && free_ctab(env->split) == 0)

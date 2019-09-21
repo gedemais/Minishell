@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/09/21 19:36:13 by gedemais         ###   ########.fr        #
+#    Updated: 2019/09/22 00:51:44 by demaisonc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -Weverything -Wall -Werror -Wextra
+CFLAGS = -g3 -Weverything -Wall -Werror -Wextra
 
 LIB_PATH = libft/
 
@@ -41,6 +41,7 @@ SRCS_NAME = main.c\
 	    exec_binary.c\
 	    setenv.c\
 		echo.c\
+		expand.c\
 	    cd.c\
 	    free.c\
 	    utils.c\
@@ -60,7 +61,7 @@ INC_PATH = includes/
 
 all : $(LIB) $(NAME)
 
-$(NAME) : $(LIB) $(OBJS) $(INC)
+$(NAME) : $(LIB) $(OBJS) $(INC_PATH)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB)
 	@echo "$(GRE)Done !$(DEF)"
 

@@ -105,15 +105,21 @@ int	ft_cd(t_env *env, char **av)
 {
 	t_env_lst	*pwd;
 	char		*path;
-	int			ret;
+	int		ret;
 
+	ret = 0;
 	if (!(pwd = get_var(env->env, "PWD")))
 		return (-1);
 	if (!(path = make_cd_path(env, av, &ret)) || ret != 0)
+	{
+		if (path)
+			free(path);
 		return (cd_errors(ret) ? -1 : 1);
+	}
 	if (chdir(path) == -1)
 	{
 		chdir_errors(av);
+		free(path);
 		return (1);
 	}
 	if (replace_value(env->env, "OLDPWD", pwd->val) == -1
