@@ -15,41 +15,7 @@ static inline char	*trim_path_end(char *path)
 	return (path);
 }
 
-static inline int	cd_cases(t_env *env, char **av, bool *prev)
-{
-	t_env_lst	*pwd;
-	t_env_lst	*oldpwd;
-	t_env_lst	*home;
-
-	if (!(pwd = get_var(env->env, "PWD"))
-		|| !(oldpwd = get_var(env->env, "OLDPWD")))
-		return (1);
-	if ((!av[1] || !av[1][0]))
-	{
-		if (!(home = get_var(env->env, "HOME")))
-			return (1);
-		replace_value(env->env, "OLDPWD", pwd->val);
-		replace_value(env->env, "PWD", home->val);
-		*prev = true;
-		return (0);
-	}
-	if (ft_strcmp(av[1], ".") == 0)
-	{
-		replace_value(env->env, "OLDPWD", pwd->val);
-		*prev = true;
-		return (0);
-	}
-	if (ft_strcmp(av[1], "..") == 0)
-	{
-		replace_value(env->env, "OLDPWD", pwd->val);
-		pwd->val = trim_path_end(pwd->val);
-		*prev = true;
-		return (0);
-	}
-	return (0);
-}
-
-static inline void	cd_errors(char **av)
+static inline void	chdir_errors(char **av)
 {
 	if (errno == EACCES)
 	{
@@ -63,29 +29,96 @@ static inline void	cd_errors(char **av)
 	}
 }
 
+static inline int	cd_errors(int id)
+{
+	if (id == -1)
+		return (-1);
+	if (id == 2)
+		ft_putstr_fd(CD_ERR_TMARGS, 2);
+	return (0);
+}
+
+static inline bool	is_dots(char **av)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (av[1][i])
+	{
+		if (av[1][i] != '.')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+static inline char	*get_dots(char *pwd, char *dots)
+{
+	char			*dest;
+	size_t			len;
+	unsigned int	i;
+
+	i = 0;
+	if (!(dest = ft_strdup(pwd)))
+		return (NULL);
+	len = ft_strlen(dots);
+	if (len == 1)
+		return (dest);
+	while (i < len - 1 && ft_strlen(dest) >= 1)
+	{
+		dest = trim_path_end(dest);
+		i++;
+	}
+	return (dest);
+}
+
+static inline char	*make_cd_path(t_env *env, char **av, int *status)
+{
+	char		*dest;
+	t_env_lst	*home;
+	t_env_lst	*pwd;
+
+	pwd = NULL;
+	if ((!(home = get_var(env->env, "HOME"))
+		|| !(pwd = get_var(env->env, "PWD"))) && (*status = -1))
+		return (NULL);
+	if (av[1] && av[2] && (*status = 2))
+		return (NULL);
+	if (av[1] && is_dots(av))
+		return (get_dots(pwd->val, av[1]));
+	if (!av[1])
+	{
+		if (!(dest = ft_strdup(home->val)) && (*status = -1))
+			return (NULL);
+	}
+	else if (av[1][0] == '/')
+	{
+		if (!(dest = ft_strdup(av[1])) && (*status = -1))
+			return (NULL);
+	}
+	else if (!(dest = re_assemble(pwd->val, "/", av[1])) && (*status = -1))
+			return (NULL);
+	return (dest);
+}
+
 int	ft_cd(t_env *env, char **av)
 {
 	t_env_lst	*pwd;
 	char		*path;
-	bool		prev;
+	int			ret;
 
-	prev = false;
-	path = NULL;
-	if (cd_cases(env, av, &prev) || av[2])
-		return (1);
-	pwd = get_var(env->env, "PWD");
-	if (prev && !(path = ft_strdup(pwd->val)))
+	if (!(pwd = get_var(env->env, "PWD")))
 		return (-1);
-	if (!prev && !(path = re_assemble(pwd->val, "/", av[1])))
-		return (-1);
-	printf("%s\n", path);
+	if (!(path = make_cd_path(env, av, &ret)) || ret != 0)
+		return (cd_errors(ret) ? -1 : 1);
 	if (chdir(path) == -1)
 	{
-		cd_errors(av);
+		chdir_errors(av);
 		return (1);
 	}
-	replace_value(env->env, "OLDPWD", pwd->val);
-	replace_value(env->env, "PWD", path);
+	if (replace_value(env->env, "OLDPWD", pwd->val) == -1
+		|| replace_value(env->env, "PWD", path) == -1)
+		return (-1);
 	free(path);
 	return (0);
 }

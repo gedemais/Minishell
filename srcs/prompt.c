@@ -23,6 +23,8 @@ static inline char		*make_path(t_env_lst *path)
 	i = 0;
 	if (!path)
 		return ("\0");
+	if (path->val[0] == '/' && !path->val[1])
+		return ("/");
 	while (path->val[i])
 		i++;
 	while (path->val[i] != '/' && i > 0)
