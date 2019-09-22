@@ -6,78 +6,85 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 17:29:00 by gedemais          #+#    #+#             */
-/*   Updated: 2018/11/07 10:12:50 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/22 18:45:46 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-static int		ft_is_in_str(char c, char *str)
+
+static inline int	is_sep(char c, char *charset)
 {
-	if (*str == c)
+	int i;
+
+	i = 0;
+	if (!(c))
 		return (1);
+	while (charset[i])
+		if (charset[i++] == c)
+			return (1);
 	return (0);
 }
 
-static int		ft_strlen_char(char *str, char *separators)
+static inline char	*ft_strdup_sep(char *src, char *charset)
 {
-	int i;
+	char	*dest;
+	int		i;
 
 	i = 0;
-	while (str[i] && !ft_is_in_str(str[i], separators))
+	while (!(is_sep(src[i], charset)))
 		i++;
-	return (i);
+	if (!(dest = (char*)malloc(sizeof(char) * (unsigned long)(i + 1))))
+		return (0);
+	i = 0;
+	while (!(is_sep(src[i], charset)))
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
-static int		ft_count_words(char *str, char *separators)
+static inline int	c_w(char *str, char *charset)
 {
+	int words;
 	int i;
-	int in_a_word;
-	int str_nbr;
 
 	i = 0;
-	if (!str)
-		return (0);
-	str_nbr = 0;
-	in_a_word = 0;
+	words = 1;
 	while (str[i])
 	{
-		if (!(ft_is_in_str(str[i], separators)) && !in_a_word)
-		{
-			in_a_word = 1;
-			str_nbr++;
-		}
-		else if (ft_is_in_str(str[i], separators))
-			in_a_word = 0;
+		if (is_sep(str[i], charset) && !(is_sep(str[i + 1], charset)))
+			words++;
 		i++;
 	}
-	return (str_nbr);
+	return (words);
 }
 
-char			**ft_strsplit(char const *s, char c)
+char				**ft_strsplit(char *str, char *charset)
 {
-	int		str_nbr;
-	char	**strs;
-	int		strs_len;
-	int		cs[3];
+	char	**tab;
+	int		words;
+	int		i;
+	int		j;
 
-	str_nbr = ft_count_words((char*)s, &c);
-	cs[0] = -1;
-	cs[2] = 0;
-	if (!(strs = (char**)malloc(sizeof(char*) * (str_nbr + 1))) || !s)
-		return (0);
-	strs[str_nbr] = 0;
-	while (++cs[0] < str_nbr)
+	j = 0;
+	i = 0;
+	if (!(str) || !(charset))
+		return (NULL);
+	words = c_w(str, charset);
+	if (!(tab = (char**)malloc(sizeof(char*) * (unsigned long)(words + 2))))
+		return (NULL);
+	while (str[i] && j < words)
 	{
-		cs[1] = 0;
-		while (ft_is_in_str(((char*)s)[cs[2]], &c))
-			cs[2]++;
-		strs_len = ft_strlen_char((char*)s + cs[2], &c);
-		if (!(strs[cs[0]] = (char*)malloc(sizeof(char) * strs_len + 1)))
-			return (0);
-		while (cs[1] < strs_len)
-			strs[cs[0]][cs[1]++] = ((char*)s)[cs[2]++];
-		strs[cs[0]][cs[1]] = '\0';
+		while (str[i] && is_sep(str[i], charset))
+			i++;
+		if (!(tab[j] = ft_strdup_sep(&str[i], charset)))
+			return (NULL);
+		while (str[i] && !(is_sep(str[i], charset)))
+			i++;
+		j++;
 	}
-	strs[cs[0]] = NULL;
-	return (strs);
+	tab[j] = NULL;
+	return (tab);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 19:49:24 by gedemais          #+#    #+#             */
+/*   Updated: 2019/09/22 19:49:27 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -17,6 +29,8 @@
 # define CD_ERR_ENOENT "cd: no such file or directory: "
 # define CD_ERR_TMARGS "cd: Too many args\n"
 
+# define B_PATH "PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:."
+
 # include <stdio.h>
 # include "../libft/libft.h"
 # include <errno.h>
@@ -25,53 +39,54 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 # include <limits.h>
+# include <pwd.h>
 
-typedef struct		s_env_lst t_env_lst;
+typedef struct s_env_lst	t_env_lst;
 
-struct			s_env_lst
+struct						s_env_lst
 {
-	char		*name;
-	char		*val;
-	t_env_lst	*next;
+	char					*name;
+	char					*val;
+	t_env_lst				*next;
 };
 
-typedef struct		s_env
+typedef struct				s_env
 {
-	t_env_lst	*env;
-	char		*input;
-	char		**semisplit;
-	char		**split;
-	char		**environment;
-}			t_env;
+	t_env_lst				*env;
+	char					*input;
+	char					**semisplit;
+	char					**split;
+	char					**environment;
+}							t_env;
 
-int			prompt(t_env *env, int state);
-int			init_sh(t_env *env, char **environment);
-int			parser(t_env *env);
-
-
-int			builtins(t_env *env);
-t_env_lst		*get_var(t_env_lst *env, char *name);
-int			exec_binary(t_env *env);
-char			*re_assemble(char *s1, char *s2, char *s3);
-unsigned int		env_len(t_env_lst *env);
-char			**refresh_env(t_env_lst *env, char **environment);
-
-int			ft_env(t_env *env, char **av);
-int			ft_unsetenv(t_env *env, char **av);
-int			ft_setenv(t_env *env, char **av);
-int			ft_cd(t_env *env, char **av);
-int			ft_echo(t_env *env, char **av);
-
-t_env_lst		*t_env_lstnew(char *var);
-int			t_env_lst_pushfront(t_env_lst **lst, t_env_lst *new);
-int			replace_value(t_env_lst *env, char *name, char *val);
-
-//char			**expansions(t_env *env, char **split);
+int							prompt(t_env *env, int state);
+int							init_sh(t_env *env, char **environment);
+int							parser(t_env *env);
+int							builtins(t_env *env);
+t_env_lst					*get_var(t_env_lst *env, char *name);
+int							exec_binary(t_env *env);
+char						*re_assemble(char *s1, char *s2, char *s3);
+unsigned int				env_len(t_env_lst *env);
+char						**refresh_env(t_env_lst *env, char **environment);
+int							ft_env(t_env *env, char **av);
+int							ft_unsetenv(t_env *env, char **av);
+int							ft_setenv(t_env *env, char **av);
+int							ft_cd(t_env *env, char **av);
+int							ft_echo(t_env *env, char **av);
+t_env_lst					*t_env_lstnew(char *var);
+int							t_env_lst_pushfront(t_env_lst **l, t_env_lst *new);
+int							replace_value(t_env_lst *env, char *name, char *v);
+char						**expansions(t_env *env, char **split);
+char						*trim_path_end(char *path);
+char						*ft_strduptil(char *str, char stop);
+t_env_lst					*build_env(t_env *env);
+bool						is_dots(char **av);
+t_env_lst					*get_pwd(void);
 
 /*
 ** Free
 */
-int			free_ctab(char **tab);
-int			free_environment(t_env_lst *env);
-int			free_env(t_env *env);
+int							free_ctab(char **tab);
+int							free_environment(t_env_lst *env);
+int							free_env(t_env *env);
 #endif

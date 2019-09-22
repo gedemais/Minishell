@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/13 12:51:50 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/20 10:56:30 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/22 18:30:20 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 char	*ft_strndup(char *s1, int size)
 {
 	char	*dest;
-	int	i;
+	int		i;
 
 	i = 0;
 	if (!s1 || size > (int)ft_strlen(s1))
 		return (NULL);
-	if (!(dest = (char*)malloc(sizeof(char) * (size + 1))))
+	if (!(dest = (char*)malloc(sizeof(char) * (unsigned long)(size + 1))))
 		return (NULL);
 	while (s1[i] && i < size)
 	{

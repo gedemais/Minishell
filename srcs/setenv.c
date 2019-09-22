@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setenv.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:01:16 by gedemais          #+#    #+#             */
+/*   Updated: 2019/09/22 19:43:32 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static inline int	unsetenv_cases(t_env_lst **env, char **av)
@@ -10,7 +22,7 @@ static inline int	unsetenv_cases(t_env_lst **env, char **av)
 	if (!av[1] || !av[1][0])
 		return (1);
 	if (ft_strcmp(tmp->name, av[1]) == 0)
- 	{
+	{
 		(*env) = tmp2;
 		free(tmp);
 		return (1);
@@ -29,10 +41,10 @@ static inline int	unsetenv_cases(t_env_lst **env, char **av)
 	return (0);
 }
 
-int		ft_unsetenv(t_env *env, char **av)
+int					ft_unsetenv(t_env *env, char **av)
 {
-	t_env_lst	*tmp;
-	t_env_lst	*tmp2;
+	t_env_lst		*tmp;
+	t_env_lst		*tmp2;
 	unsigned int	i;
 
 	i = 0;
@@ -58,11 +70,14 @@ int		ft_unsetenv(t_env *env, char **av)
 	return (1);
 }
 
-int		replace_value(t_env_lst *env, char *name, char *val)
+int					replace_value(t_env_lst *env, char *name, char *val)
 {
 	t_env_lst	*tmp;
+	char		*var;
+	bool		found;
 
 	tmp = env;
+	found = false;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->name, name) == 0)
@@ -70,8 +85,16 @@ int		replace_value(t_env_lst *env, char *name, char *val)
 			free(tmp->val);
 			if (!(tmp->val = ft_strdup(val)))
 				return (-1);
+			found = true;
 		}
 		tmp = tmp->next;
+	}
+	if (!found)
+	{
+		if (!(var = re_assemble(name, "=", val))
+			|| t_env_lst_pushfront(&env, t_env_lstnew(var)) != 0)
+			return (-1);
+		free(var);
 	}
 	return (0);
 }
@@ -98,9 +121,9 @@ static inline int	setenv_cases(t_env *env, char **av)
 	return (0);
 }
 
-int		ft_setenv(t_env *env, char **av)
+int					ft_setenv(t_env *env, char **av)
 {
-	char		*var;
+	char	*var;
 	int		ret;
 	int		i;
 

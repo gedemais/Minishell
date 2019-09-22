@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/09/22 00:51:44 by demaisonc        ###   ########.fr        #
+#    Updated: 2019/09/22 15:06:44 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS_NAME = main.c\
 	    setenv.c\
 		echo.c\
 		expand.c\
+		build_env.c\
 	    cd.c\
 	    free.c\
 	    utils.c\

@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:01:01 by gedemais          #+#    #+#             */
+/*   Updated: 2019/09/22 19:03:52 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static inline int	minishell(char **environment)
 {
 	t_env	env;
-	int	state;
+	int		state;
 
 	ft_memset(&env, 0, sizeof(t_env));
 	if (init_sh(&env, environment) != 0)
@@ -19,7 +31,7 @@ static inline int	minishell(char **environment)
 	return (0);
 }
 
-int			main(int argc, char **argv, char **env)
+int					main(int argc, char **argv, char **env)
 {
 	(void)argv;
 	if (argc > 2)

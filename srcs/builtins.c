@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:00:20 by gedemais          #+#    #+#             */
+/*   Updated: 2019/09/22 18:03:25 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static inline int	ft_exit(t_env *env, char **av)
 {
 	(void)av;
 	free_env(env);
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
 
-int	ft_env(t_env *env, char **av)
+int					ft_env(t_env *env, char **av)
 {
 	t_env_lst	*tmp;
 
@@ -23,14 +35,14 @@ int	ft_env(t_env *env, char **av)
 	return (0);
 }
 
-int	builtins(t_env *env)
+int					builtins(t_env *env)
 {
-	char	*b_names[NB_BUILTINS] = {"env", "setenv", "unsetenv", "exit",
-					"echo", "cd"};
-	int	(*b_func[NB_BUILTINS])(t_env*, char**) = {ft_env, ft_setenv,
+	static char		*b_names[NB_BUILTINS] = {"env", "setenv", "unsetenv",
+					"exit", "echo", "cd"};
+	static int		(*b_func[NB_BUILTINS])(t_env*, char**) = {ft_env, ft_setenv,
 					ft_unsetenv, ft_exit, ft_echo, ft_cd};
 	unsigned int	i;
-	int		ret;
+	int				ret;
 
 	i = 0;
 	if (!env->split[0])

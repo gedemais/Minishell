@@ -1,17 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_binary.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:00:38 by gedemais          #+#    #+#             */
+/*   Updated: 2019/09/22 18:34:57 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static inline char	*find_binary(t_env *env, char **av)
 {
-	char		**p;
-	t_env_lst	*path;
-	char		*dest;
+	char			*dest;
+	t_env_lst		*path;
+	char			**p;
 	unsigned int	i;
 
 	i = 0;
 	if (access(av[0], X_OK) == 0)
 		return (ft_strdup(av[0]));
 	if (!(path = get_var(env->env, "PATH"))
-		|| !(p = ft_strsplit(path->val, ':')))
+		|| !(p = ft_strsplit(path->val, ":")))
 		return (NULL);
 	while (p[i])
 	{
@@ -43,10 +55,10 @@ static inline pid_t	create_process(void)
 	return (pid);
 }
 
-char			**refresh_env(t_env_lst *env, char **environment)
+char				**refresh_env(t_env_lst *env, char **environment)
 {
-	char		**new;
-	t_env_lst	*tmp;
+	char			**new;
+	t_env_lst		*tmp;
 	unsigned int	len;
 	unsigned int	i;
 
@@ -68,12 +80,12 @@ char			**refresh_env(t_env_lst *env, char **environment)
 	return (new);
 }
 
-int			exec_binary(t_env *env)
+int					exec_binary(t_env *env)
 {
-	pid_t		pid;
+	int				status;
+	char			*path;
+	pid_t			pid;
 	unsigned int	i;
-	int		status;
-	char		*path;
 
 	i = 0;
 	status = 0;
