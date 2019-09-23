@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:06 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 18:35:12 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/23 19:08:12 by unknown          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 static inline int	parse_cmd(t_env *env, char *cmd)
 {
-	unsigned int	i;
-	int				ret;
+	int	ret;
 
-	i = 0;
 	if (!(env->split = ft_strsplit(cmd, " "))
 		|| !(env->split = expansions(env, env->split)))
 		return (-1);

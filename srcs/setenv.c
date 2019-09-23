@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:16 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 19:43:32 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/23 21:48:48 by unknown          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,8 @@ int					ft_setenv(t_env *env, char **av)
 		}
 	if (!(var = re_assemble(av[1], "=", av[2])))
 		return (-1);
-	if (t_env_lst_pushfront(&env->env, t_env_lstnew(var)) != 0)
+	if ((env->env && t_env_lst_pushfront(&env->env, t_env_lstnew(var)) != 0)
+		|| !(env->env = t_env_lstnew(var)))
 		return (-1);
 	free(var);
 	return (0);

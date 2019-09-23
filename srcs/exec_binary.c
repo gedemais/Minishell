@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:38 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 18:34:57 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/23 19:08:59 by unknown          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,7 @@ int					exec_binary(t_env *env)
 	int				status;
 	char			*path;
 	pid_t			pid;
-	unsigned int	i;
 
-	i = 0;
 	status = 0;
 	if (!(path = find_binary(env, env->split)))
 		return (2);

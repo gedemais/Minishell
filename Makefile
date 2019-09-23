@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/09/22 15:06:44 by gedemais         ###   ########.fr        #
+#    Updated: 2019/09/23 19:06:21 by unknown          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -g3 -Weverything -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra
 
 LIB_PATH = libft/
 
