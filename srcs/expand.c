@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:43 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 18:16:39 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/23 14:02:39 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static inline char	*expand_tilde(t_env *env, char *base, int j)
 		{
 			ft_putstr_fd("minishell: no such user or named directory: ", 2);
 			ft_putendl_fd(&base[1], 2);
+			free(dest);
 			return (NULL);
 		}
 		free(base);
@@ -71,12 +72,14 @@ char				**expansions(t_env *env, char **split)
 			{
 				if (!(split[i] = expand_var(env, split[i], tmp, j)))
 					return (NULL);
+				free(tmp);
 				j = 0;
 				continue ;
 			}
 			else if (split[i][j] == '~' && j == 0
 				&& !(split[i] = expand_tilde(env, split[i], j)))
 				return (NULL);
+			free(tmp);
 			j++;
 		}
 	return (split);

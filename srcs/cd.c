@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:25 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 19:47:28 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/23 14:09:18 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,13 @@ int					ft_cd(t_env *env, char **av)
 	if (!(pwd = get_var(env->env, "PWD")) && (replace_value(env->env, "PWD",
 		get_pwd()->val) || !(pwd = get_var(env->env, "PWD"))))
 		return (-1);
-	if (!(path = make_cd_path(env, av, &ret)) || ret != 0)
+	if (av[1] && av[1][0] == '-' && !av[1][1] && !av[2] && get_var(env->env, "OLDPWD"))
+	{
+		ft_putendl(get_var(env->env, "OLDPWD")->val);
+		if (!(path = ft_strdup(get_var(env->env, "OLDPWD")->val)))
+			return (1);
+	}
+	else if (!(path = make_cd_path(env, av, &ret)) || ret != 0)
 	{
 		if (path)
 			free(path);
