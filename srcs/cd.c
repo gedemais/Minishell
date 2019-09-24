@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:25 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/23 14:09:18 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/24 15:10:32 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,18 @@ static inline char	*make_cd_path(t_env *env, char **av, int *status)
 	t_env_lst	*pwd;
 
 	pwd = NULL;
-	if (((!(home = get_var(env->env, "HOME"))
-		|| !(pwd = get_var(env->env, "PWD")))
+	if ((!(pwd = get_var(env->env, "PWD"))
 		&& (*status = -1)) || (av[1] && av[2]
 		&& (*status = 2)))
 		return (NULL);
 	if (!(dest = NULL) && !av[1])
 	{
-		if (!(dest = ft_strdup(home->val))
-			&& (*status = -1))
+		if (!(home = get_var(env->env, "HOME"))
+			|| (!(dest = ft_strdup(home->val)) && (*status = -1)))
+		{
+			ft_putstr_fd("cd: No home found.\n", 2);
 			return (NULL);
+		}
 	}
 	else if (av[1] && is_dots(av))
 		return (get_dots(pwd->val, av[1]));
@@ -86,6 +88,37 @@ static inline char	*make_cd_path(t_env *env, char **av, int *status)
 	return (dest);
 }
 
+static inline int	secure_pwd(t_env *env)
+{
+	t_env_lst	*pwd;
+
+	if (get_var(env->env, "PWD"))
+		return (0);
+	if (!(pwd = get_var(env->env, "PWD")) && !(pwd = get_pwd()))
+		return (-1);
+	if (!env->env)
+		env->env = pwd;
+	else if (t_env_lst_pushfront(&env->env, pwd) != 0)
+		return (-1);
+	return (0);
+}
+
+static inline char	*cd_less(t_env *env)
+{
+	t_env_lst	*oldpwd;
+	char		*path;
+
+	if (!(oldpwd = get_var(env->env, "OLDPWD")))
+	{
+		ft_putstr_fd("cd: no previous path found.\n", 2);
+		return (NULL);
+	}
+	ft_putendl(oldpwd->val);
+	if (!(path = ft_strdup(oldpwd->val)))
+		return (NULL);
+	return (path);
+}
+
 int					ft_cd(t_env *env, char **av)
 {
 	t_env_lst	*pwd;
@@ -93,14 +126,12 @@ int					ft_cd(t_env *env, char **av)
 	int			ret;
 
 	ret = 0;
-	if (!(pwd = get_var(env->env, "PWD")) && (replace_value(env->env, "PWD",
-		get_pwd()->val) || !(pwd = get_var(env->env, "PWD"))))
+	if (secure_pwd(env) != 0 || !(pwd = get_var(env->env, "PWD")))
 		return (-1);
-	if (av[1] && av[1][0] == '-' && !av[1][1] && !av[2] && get_var(env->env, "OLDPWD"))
+	if (av[1] && av[1][0] == '-' && !av[1][1] && !av[2])
 	{
-		ft_putendl(get_var(env->env, "OLDPWD")->val);
-		if (!(path = ft_strdup(get_var(env->env, "OLDPWD")->val)))
-			return (1);
+		if (!(path = cd_less(env)))
+			return (1);	
 	}
 	else if (!(path = make_cd_path(env, av, &ret)) || ret != 0)
 	{

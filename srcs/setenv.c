@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:16 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 19:43:32 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/24 12:36:53 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,11 @@ int					ft_unsetenv(t_env *env, char **av)
 {
 	t_env_lst		*tmp;
 	t_env_lst		*tmp2;
-	unsigned int	i;
+	unsigned int		i;
+	bool			not_found;
 
 	i = 0;
+	not_found = false;
 	if (unsetenv_cases(&env->env, av))
 		return (0);
 	while (av[++i])
@@ -59,15 +61,16 @@ int					ft_unsetenv(t_env *env, char **av)
 			if (ft_strcmp(tmp2->name, av[i]) == 0)
 			{
 				tmp2 = tmp2->next;
+				free(tmp->next->name);
+				free(tmp->next->val);
 				free(tmp->next);
 				tmp->next = tmp2;
-				return (0);
 			}
 			tmp = tmp->next;
 			tmp2 = tmp2->next;
 		}
 	}
-	return (1);
+	return (not_found ? 1 : 0);
 }
 
 int					replace_value(t_env_lst *env, char *name, char *val)

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:11 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 18:18:34 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/24 15:05:02 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ t_env_lst				*get_var(t_env_lst *env, char *name)
 	return (NULL);
 }
 
-static inline char		*make_path(t_env_lst *path, t_env_lst *home)
+static inline char		*make_path(t_env_lst *path, t_env_lst *home, bool h)
 {
 	unsigned int		i;
 
 	i = 0;
 	if (!path)
 		return ("\0");
-	if (home && ft_strcmp(path->val, home->val) == 0)
+	if (h && ft_strcmp(path->val, home->val) == 0)
 		return ("~");
 	if (path->val[0] == '/' && !path->val[1])
 		return ("/");
@@ -50,15 +50,17 @@ static inline char		*make_path(t_env_lst *path, t_env_lst *home)
 
 int						prompt(t_env *env, int state)
 {
-	static t_env_lst	*home = NULL;
+	t_env_lst	*home;
+	bool		h;
 
-	if (!home && !(home = get_var(env->env, "HOME")))
-		(void)state;
+	h = true;
+	if (!(home = get_var(env->env, "HOME")))
+		h = false;
 	ft_putstr(state == 0 ? L_GREEN : L_RED);
 	ft_putchar('$');
 	ft_putchar('{');
 	ft_putstr(STOP);
-	ft_putstr(make_path(get_var(env->env, "PWD"), home));
+	ft_putstr(make_path(get_var(env->env, "PWD"), home, h));
 	ft_putstr(state == 0 ? L_GREEN : L_RED);
 	ft_putchar('}');
 	ft_putstr(STOP);
