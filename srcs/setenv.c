@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:16 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/24 17:34:38 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/24 17:40:58 by demaisonc        ###   ########.fr       */
 /*   Updated: 2019/09/23 21:48:48 by unknown          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -51,6 +51,8 @@ int					ft_unsetenv(t_env *env, char **av)
 
 	i = 0;
 	not_found = false;
+	if (!env->env)
+		return (1);
 	while (env->env && av[i] && unsetenv_cases(&env->env, &av[i]))
 		i++;
 	i = 0;
