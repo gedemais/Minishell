@@ -6,7 +6,8 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:11 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/24 15:05:02 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/24 15:15:26 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/23 19:09:08 by unknown          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +16,7 @@
 t_env_lst				*get_var(t_env_lst *env, char *name)
 {
 	t_env_lst		*tmp;
-	unsigned int	i;
 
-	i = 0;
 	if (!env || !name || !name[0])
 		return (NULL);
 	tmp = env;
