@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:16 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/24 17:40:58 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/24 19:01:09 by unknown          ###   ########.fr       */
 /*   Updated: 2019/09/23 21:48:48 by unknown          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -53,8 +53,11 @@ int					ft_unsetenv(t_env *env, char **av)
 	not_found = false;
 	if (!env->env)
 		return (1);
-	while (env->env && av[i] && unsetenv_cases(&env->env, &av[i]))
+	while (env->env && av[i])
+	{
+		unsetenv_cases(&env->env, &av[i]);
 		i++;
+	}
 	i = 0;
 	while (env->env && av[++i])
 	{
@@ -70,8 +73,11 @@ int					ft_unsetenv(t_env *env, char **av)
 				free(tmp->next);
 				tmp->next = tmp2;
 			}
-			tmp = tmp->next;
-			tmp2 = tmp2->next;
+			else
+			{
+				tmp = tmp->next;
+				tmp2 = tmp2->next;
+			}
 		}
 	}
 	return (not_found ? 1 : 0);
