@@ -5,9 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/22 18:01:16 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/24 19:01:09 by unknown          ###   ########.fr       */
-/*   Updated: 2019/09/23 21:48:48 by unknown          ###   ########.fr       */
+/*   Created: 2019/09/25 11:28:43 by gedemais          #+#    #+#             */
+/*   Updated: 2019/09/25 15:45:26 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +23,8 @@ static inline int	unsetenv_cases(t_env_lst **env, char **av)
 		return (1);
 	if (ft_strcmp(tmp->name, av[1]) == 0)
 	{
+		del_node(*env);
 		(*env) = tmp2;
-		free(tmp);
 		return (1);
 	}
 	while (tmp2->next)
@@ -35,7 +34,7 @@ static inline int	unsetenv_cases(t_env_lst **env, char **av)
 	}
 	if (ft_strcmp(tmp2->name, av[1]) == 0)
 	{
-		free(tmp2);
+		del_node(tmp2);
 		tmp->next = NULL;
 		return (1);
 	}

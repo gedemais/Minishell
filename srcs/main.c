@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:01 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 19:03:52 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/25 15:03:20 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static inline int	minishell(char **environment)
 		ft_strdel(&(env.input));
 		prompt(&env, state);
 	}
+	free_env(&env);
 	return (0);
 }
 

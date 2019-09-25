@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:38 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/23 19:08:59 by unknown          ###   ########.fr       */
+/*   Updated: 2019/09/25 16:59:57 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,17 @@ static inline char	*find_binary(t_env *env, char **av)
 		return (NULL);
 	while (p[i])
 	{
-		if (!(dest = re_assemble(p[i], "/", av[0])) && !free_ctab(p))
+		if (!(dest = re_assemble(p[i], "/", av[0])) && !(p = free_ctab(p)))
 			return (NULL);
 		if (access(dest, X_OK) == 0)
 		{
-			free_ctab(p);
+			p = free_ctab(p);
 			return (dest);
 		}
 		free(dest);
 		i++;
 	}
-	free_ctab(p);
+	p = free_ctab(p);
 	return (NULL);
 }
 
@@ -55,6 +55,25 @@ static inline pid_t	create_process(void)
 	return (pid);
 }
 
+static inline bool	argv_len(char **av)
+{
+	unsigned int		i;
+
+	i = 0;
+	while (av[i])
+	{
+		if (!av[i][0])
+			return (1);
+		i++;
+	}
+	if (i >= MAX_ARG)
+	{
+		ft_putstr_fd("minishell: Too many arguments.\n", 1);
+		return (1);
+	}
+	return (0);
+}
+
 char				**refresh_env(t_env_lst *env, char **environment)
 {
 	char			**new;
@@ -66,7 +85,7 @@ char				**refresh_env(t_env_lst *env, char **environment)
 	tmp = env;
 	len = env_len(env);
 	if (environment)
-		free_ctab(environment);
+		environment = free_ctab(environment);
 	if (!(new = (char**)malloc(sizeof(char*) * (len + 1))))
 		return (NULL);
 	while (i < len && tmp)
@@ -91,10 +110,18 @@ int					exec_binary(t_env *env)
 		return (2);
 	if (!(env->environment = refresh_env(env->env, env->environment)))
 		return (-1);
+	if (argv_len(env->split))
+	{
+		free(path);
+		return (1);
+	}
 	if ((pid = create_process()) == -1)
 		return (-1);
-	if (pid == 0)
-		execve(path, env->split, env->environment);
+	if (pid == 0 && execve(path, env->split, env->environment) == -1)
+	{
+		free(path);
+		return (-1);
+	}
 	if (wait(&status) == -1)
 		return (-1);
 	free(path);

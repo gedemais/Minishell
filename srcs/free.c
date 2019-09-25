@@ -6,13 +6,21 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:48 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 18:00:49 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/25 15:44:51 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	free_ctab(char **tab)
+int		del_node(t_env_lst *node)
+{
+	free(node->name);
+	free(node->val);
+	free(node);
+	return (0);
+}
+
+char	**free_ctab(char **tab)
 {
 	unsigned int	i;
 
@@ -23,7 +31,8 @@ int	free_ctab(char **tab)
 		i++;
 	}
 	free(tab);
-	return (0);
+	tab = NULL;
+	return (tab);
 }
 
 int	free_environment(t_env_lst *env)
@@ -33,6 +42,7 @@ int	free_environment(t_env_lst *env)
 	free(env->name);
 	free(env->val);
 	free(env);
+	env = NULL;
 	return (0);
 }
 
@@ -41,12 +51,15 @@ int	free_env(t_env *env)
 	if (env->input)
 		free(env->input);
 	if (env->env)
+	{
 		free_environment(env->env);
+		env->env = NULL;
+	}
 	if (env->semisplit)
-		free_ctab(env->semisplit);
+		env->semisplit = free_ctab(env->semisplit);
 	if (env->split)
-		free_ctab(env->split);
+		env->split = free_ctab(env->split);
 	if (env->environment)
-		free_ctab(env->environment);
+		env->environment = free_ctab(env->environment);
 	return (0);
 }

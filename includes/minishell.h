@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 19:49:24 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 19:49:27 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/25 18:22:23 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define STOP "\033[0m"
 
 # define NB_BUILTINS 6
+
+# define MAX_ARG 4096
 
 # define SETENV_ERR_0 "setenv: variable name must not contain = character.\n"
 
@@ -82,11 +84,16 @@ char						*ft_strduptil(char *str, char stop);
 t_env_lst					*build_env(t_env *env);
 bool						is_dots(char **av);
 t_env_lst					*get_pwd(void);
+int							secure_pwd(t_env *env);
+char						*cd_less(t_env *env);
+char						*cd_home(t_env *env, int *status);
+bool						check_white(char **av);
 
 /*
 ** Free
 */
-int							free_ctab(char **tab);
+char						**free_ctab(char **tab);
 int							free_environment(t_env_lst *env);
 int							free_env(t_env *env);
+int							del_node(t_env_lst *node);
 #endif
