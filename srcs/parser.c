@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:06 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/25 18:49:15 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/25 20:22:52 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static inline int	parse_cmd(t_env *env, char *cmd)
 static inline char	**make_semisplit(t_env *env)
 {
 	char			**dest;
-	char			*tmp;
 	unsigned int	i;
 
 	i = 0;
@@ -50,13 +49,7 @@ static inline char	**make_semisplit(t_env *env)
 		return (NULL);
 	while (dest[i])
 	{
-		if (!(tmp = ft_strtrim(dest[i])))
-			return (NULL);
-		if (ft_strcmp(tmp, dest[i]) != 0)
-		{
-			free(dest[i]);
-			dest[i] = tmp;
-		}
+		printf("dest[%u] = |%s|\n", i, dest[i]);
 		i++;
 	}
 	return (dest);
