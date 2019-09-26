@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:06 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 15:06:35 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 19:30:01 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static inline int	parse_cmd(t_env *env, char *cmd)
 		return (1);
 	ret = exec_binary(env);
 	if ((ret == -1 || ret == 1) && !(env->split = free_ctab(env->split)))
-		return (ret == -1 ? -1 : 0);
+		return (ret == -1 ? -1 : 1);
 	else if (ret == 2)
 	{
 		ft_putstr_fd("minishell: ", 2);

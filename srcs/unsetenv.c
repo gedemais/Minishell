@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 18:15:54 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 18:40:50 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 19:36:06 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static inline int	unsetenv_cases(t_env_lst **env, char **av)
 	return (0);
 }
 
-static inline int			unsetenv_loop(t_env *env, char **av, bool *not_found)
+static inline int	unsetenv_loop(t_env *env, char **av, bool *not_found)
 {
 	t_env_lst		*tmp;
 	t_env_lst		*tmp2;
@@ -85,4 +85,3 @@ int					ft_unsetenv(t_env *env, char **av)
 		return (1);
 	return (not_found ? 1 : 0);
 }
-

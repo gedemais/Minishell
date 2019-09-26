@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:38 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 18:07:11 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 19:29:49 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,12 @@ int					exec_binary(t_env *env)
 	}
 	if ((pid = create_process()) == -1)
 		return (-1);
-	if (pid == 0 && execve(path, env->split, env->environment) == -1)
+	if ((pid == 0 && execve(path, env->split, env->environment) == -1)
+		|| wait(&status) == -1)
 	{
 		free(path);
 		return (-1);
 	}
-	if (wait(&status) == -1)
-		return (-1);
 	free(path);
 	return (WIFEXITED(status) ? WEXITSTATUS(status) : 1);
 }

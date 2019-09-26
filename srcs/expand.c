@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:43 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 18:12:47 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 19:34:14 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static inline char	*ex_td(t_env *env, char *base, int j, bool test)
 	if (j == 0 && !base[j + 1])
 	{
 		free(test ? NULL : base);
-		return (ft_strdup(var->val));
+		return (test ? base : ft_strdup(var->val));
 	}
 	else if (j == 0 && base[j + 1])
 	{
