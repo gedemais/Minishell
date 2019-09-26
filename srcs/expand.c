@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:43 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/24 22:19:42 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/26 15:18:28 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static inline char	*expand_tilde(t_env *env, char *base, int j)
 		return (ft_strdup(var->val));
 	else if (j == 0 && base[j + 1])
 	{
-		if (!(dest = ft_strjoin(var->val, &base[1])))
+		if (!(dest = ft_strjoin(var->val, &base[1])) && !(env->split = free_ctab(env->split)))
 			return (NULL);
-		if (access(dest, X_OK) != 0)
+		if (access(dest, X_OK) != 0 && !(env->split = free_ctab(env->split)))
 		{
 			ft_putstr_fd("minishell: no such user or named directory: ", 2);
 			ft_putendl_fd(&base[1], 2);
@@ -67,7 +67,10 @@ char				**expansions(t_env *env, char **split)
 		while (split[i][j])
 		{
 			if (!(tmp = ft_strduptil(&split[i][j + 1], '$')))
+			{
+				split = free_ctab(split);
 				return (NULL);
+			}
 			if (split[i][j] == '$' && split[i][j + 1] && get_var(env->env, tmp))
 			{
 				if (!(split[i] = expand_var(env, split[i], tmp, j)))

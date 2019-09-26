@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:06 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 12:15:07 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 15:06:35 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@ static inline char	**make_split(char *cmd)
 	i = 0;
 	if (!cmd && !cmd[0])
 		return (NULL);
-	if (!(dest = ft_strsplit(cmd, " \t")))
+	if (!(dest = ft_strsplit(cmd, " \t")) || !dest[0] || !dest[0][0])
+	{
+		dest = dest ? free_ctab(dest) : NULL;
 		return (NULL);
+	}
 	while (dest[i])
 		i++;
 	i--;
@@ -37,11 +40,10 @@ static inline char	**make_split(char *cmd)
 
 static inline int	parse_cmd(t_env *env, char *cmd)
 {
-	int	ret;
+	int		ret;
 
 	if (!(env->split = make_split(cmd))
-		|| (!(env->split = expansions(env, env->split))
-		&& !(env->split = free_ctab(env->split))))
+		|| !(env->split = expansions(env, env->split)))
 		return (-1);
 	ret = builtins(env);
 	if ((ret == -1 || ret == 1) && !(env->split = free_ctab(env->split)))
@@ -49,8 +51,6 @@ static inline int	parse_cmd(t_env *env, char *cmd)
 	else if (ret == 2 && !(env->split = free_ctab(env->split)))
 		return (1);
 	ret = exec_binary(env);
-	if (ret == 1)
-		return (ret);
 	if ((ret == -1 || ret == 1) && !(env->split = free_ctab(env->split)))
 		return (ret == -1 ? -1 : 0);
 	else if (ret == 2)

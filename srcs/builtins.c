@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:20 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/22 18:03:25 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 13:15:15 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int					builtins(t_env *env)
 	int				ret;
 
 	i = 0;
-	if (!env->split[0])
+	if (!env->split || !env->split[0])
 		return (1);
 	while (i < NB_BUILTINS)
 	{
