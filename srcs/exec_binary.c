@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:38 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 15:41:33 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 18:07:11 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,18 @@ static inline char	*find_binary(t_env *env, char **av)
 	char			*dest;
 	t_env_lst		*path;
 	char			**p;
-	unsigned int	i;
+	int				i;
 
-	i = 0;
-	dest = NULL;
-	if (!av || (av[0][0] == '.' && !av[0][1]) || (av[0][0] == '.' && av[0][1] == '.' && !av[0][2]))
-		return (NULL);
-	if (access(av[0], X_OK) == 0)
+	i = -1;
+	if (!(dest = NULL) && access(av[0], X_OK) == 0)
 		return (ft_strdup(av[0]));
 	if (!(path = get_var(env->env, "PATH"))
 		|| !(p = ft_strsplit(path->val, ":")))
 		return (NULL);
-	while (p[i])
+	while (p[++i])
 	{
-		if (!(dest = re_assemble(p[i], "/", av[0])) && !(p = free_ctab(p)))
+		if (!(dest = re_assemble(p[i], "/", av[0]))
+			&& !(p = free_ctab(p)))
 			return (NULL);
 		if (access(dest, X_OK) == 0)
 		{
@@ -38,7 +36,6 @@ static inline char	*find_binary(t_env *env, char **av)
 			return (dest);
 		}
 		free(dest);
-		i++;
 	}
 	p = free_ctab(p);
 	return (NULL);

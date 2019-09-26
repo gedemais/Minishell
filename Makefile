@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/05 00:59:17 by gedemais          #+#    #+#              #
-#    Updated: 2019/09/25 13:50:57 by gedemais         ###   ########.fr        #
+#    Updated: 2019/09/26 18:18:37 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRCS_NAME = main.c\
 	    builtins.c\
 	    exec_binary.c\
 	    setenv.c\
+		unsetenv.c\
 		echo.c\
 		expand.c\
 		build_env.c\

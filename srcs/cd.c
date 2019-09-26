@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:25 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 16:24:28 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 16:32:12 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int					ft_cd(t_env *env, char **av)
 	if (av[1] && av[1][0] == '-' && !av[1][1] && !av[2])
 	{
 		if (!(path = cd_less(env)))
-			return (1);	
+			return (1);
 	}
 	else if (!(path = make_cd_path(env, av, &ret)) || ret != 0)
 	{

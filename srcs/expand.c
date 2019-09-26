@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:43 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 16:30:54 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 18:12:47 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,11 @@ static inline char	*expand_var(t_env *env, char *base, char *name, int j)
 	return (dest);
 }
 
-static inline char	*expand_tilde(t_env *env, char *base, int j, bool test)
+static inline char	*ex_td(t_env *env, char *base, int j, bool test)
 {
 	t_env_lst		*var;
 	char			*dest;
 
-	if (!base || !base[0])
-		return (NULL);
 	if (!(var = get_var(env->env, "HOME")))
 		return (base);
 	if (j == 0 && !base[j + 1])
@@ -61,6 +59,18 @@ static inline char	*expand_tilde(t_env *env, char *base, int j, bool test)
 	return (base);
 }
 
+static inline char	*norme(t_env *env, char *split_i, char *tmp, int *j)
+{
+	if (!(split_i = expand_var(env, split_i, tmp, *j)))
+	{
+		free(tmp);
+		return (NULL);
+	}
+	free(tmp);
+	*j = 0;
+	return (split_i);
+}
+
 char				**expansions(t_env *env, char **split)
 {
 	char			*tmp;
@@ -68,31 +78,24 @@ char				**expansions(t_env *env, char **split)
 	int				j;
 
 	i = -1;
-	while (split && split[++i] && (j = 0) == 0)
-		while (split[i][j])
+	while (split && split[++i] && (j = -1) == -1)
+		while (split[i][++j])
 		{
 			if (!(tmp = ft_strduptil(&split[i][j + 1], '$')))
 				return (NULL);
 			if (split[i][j] == '$' && split[i][j + 1] && get_var(env->env, tmp))
 			{
-				if (!(split[i] = expand_var(env, split[i], tmp, j)))
-				{
-					free(tmp);
+				if (!(split[i] = norme(env, split[i], tmp, &j)))
 					return (NULL);
-				}
-				free(tmp);
-				j = 0;
 				continue ;
 			}
-			else if (split[i][j] == '~' && j == 0
-				&& (!expand_tilde(env, split[i], j, true)
-				|| !(split[i] = expand_tilde(env, split[i], j, false))))
+			else if (split[i][j] == '~' && j == 0 && (!ex_td(env,
+			split[i], j, true) || !(split[i] = ex_td(env, split[i], j, false))))
 			{
 				free(tmp);
 				return (NULL);
 			}
 			free(tmp);
-			j++;
 		}
 	return (split);
 }
