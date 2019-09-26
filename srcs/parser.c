@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:06 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 00:59:46 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/26 12:15:07 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,24 @@
 
 static inline char	**make_split(char *cmd)
 {
-	char		**dest;
-	char		*tmp;
+	char			**dest;
 	unsigned int	i;
 
 	i = 0;
-	if (!(tmp = ft_strtrim(cmd)))
+	if (!cmd && !cmd[0])
 		return (NULL);
-	if (!(dest = ft_strsplit(tmp, " \t")))
+	if (!(dest = ft_strsplit(cmd, " \t")))
+		return (NULL);
+	while (dest[i])
+		i++;
+	i--;
+	if (i == 0)
+		return (dest);
+	if (!dest[i][0])
 	{
-		free(tmp);
-		return (NULL);
+		free(dest[i]);
+		dest[i] = NULL;
 	}
-	free(tmp);
 	return (dest);
 }
 
@@ -35,7 +40,8 @@ static inline int	parse_cmd(t_env *env, char *cmd)
 	int	ret;
 
 	if (!(env->split = make_split(cmd))
-		|| !(env->split = expansions(env, env->split)))
+		|| (!(env->split = expansions(env, env->split))
+		&& !(env->split = free_ctab(env->split))))
 		return (-1);
 	ret = builtins(env);
 	if ((ret == -1 || ret == 1) && !(env->split = free_ctab(env->split)))
