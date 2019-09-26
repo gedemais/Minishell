@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:48 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/25 15:44:51 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 16:15:34 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**free_ctab(char **tab)
 	return (tab);
 }
 
-int	free_environment(t_env_lst *env)
+int		free_environment(t_env_lst *env)
 {
 	if (env->next)
 		free_environment(env->next);
@@ -46,7 +46,7 @@ int	free_environment(t_env_lst *env)
 	return (0);
 }
 
-int	free_env(t_env *env)
+int		free_env(t_env *env)
 {
 	if (env->input)
 		free(env->input);

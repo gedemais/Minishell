@@ -6,13 +6,13 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:25 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/25 14:11:30 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 16:24:28 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static inline void	chdir_errors(char **av)
+static inline int	chdir_errors(char **av)
 {
 	if (errno == EACCES)
 	{
@@ -24,6 +24,7 @@ static inline void	chdir_errors(char **av)
 		ft_putstr_fd(CD_ERR_ENOENT, 2);
 		ft_putendl_fd(av[1], 2);
 	}
+	return (0);
 }
 
 static inline int	cd_errors(int id)
@@ -103,15 +104,10 @@ int					ft_cd(t_env *env, char **av)
 			free(path);
 		return (cd_errors(ret) ? -1 : 1);
 	}
-	if (chdir(path) == -1)
+	if (chdir(path) == -1 && chdir_errors(av) == 0)
 	{
-		chdir_errors(av);
 		free(path);
 		return (1);
 	}
-	if (replace_value(env->env, "OLDPWD", pwd->val) == -1
-		|| replace_value(env->env, "PWD", path) == -1)
-		return (-1);
-	free(path);
-	return (0);
+	return (replace_paths(env, pwd, path) == 0 ? 0 : -1);
 }

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 11:46:29 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/25 16:06:39 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 16:20:12 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int		secure_pwd(t_env *env)
 
 	if (get_var(env->env, "PWD"))
 		return (0);
-	if (!(pwd = get_var(env->env, "PWD")) && !(pwd = get_pwd()))
+	if (!(pwd = get_var(env->env, "PWD"))
+		&& !(pwd = get_pwd()))
 		return (-1);
 	if (!env->env)
 		env->env = pwd;
@@ -73,8 +74,17 @@ bool	check_white(char **av)
 	while (av[i][j])
 	{
 		if (ft_is_whitespace(av[i][j]) == 0)
-			ws  = false;
+			ws = false;
 		j++;
 	}
 	return (ws);
+}
+
+int		replace_paths(t_env *env, t_env_lst *pwd, char *path)
+{
+	if (replace_value(env->env, "OLDPWD", pwd->val) == -1
+		|| replace_value(env->env, "PWD", path) == -1)
+		return (-1);
+	free(path);
+	return (0);
 }

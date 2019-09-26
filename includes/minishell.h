@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 19:49:24 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/25 18:22:23 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 16:20:30 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int							secure_pwd(t_env *env);
 char						*cd_less(t_env *env);
 char						*cd_home(t_env *env, int *status);
 bool						check_white(char **av);
+int							replace_paths(t_env *env, t_env_lst *pwd, char *path);
 
 /*
 ** Free
