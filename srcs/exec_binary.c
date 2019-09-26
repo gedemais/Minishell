@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:38 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/26 14:55:47 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 15:41:33 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static inline char	*find_binary(t_env *env, char **av)
 	unsigned int	i;
 
 	i = 0;
+	dest = NULL;
 	if (!av || (av[0][0] == '.' && !av[0][1]) || (av[0][0] == '.' && av[0][1] == '.' && !av[0][2]))
 		return (NULL);
 	if (access(av[0], X_OK) == 0)
