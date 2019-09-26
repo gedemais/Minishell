@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:38 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/25 16:59:57 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 01:04:18 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static inline char	*find_binary(t_env *env, char **av)
 	unsigned int	i;
 
 	i = 0;
+	if ((av[0][0] == '.' && !av[0][1]) || (av[0][0] == '.' && av[0][1] == '.' && !av[0][2]))
+		return (NULL);
 	if (access(av[0], X_OK) == 0)
 		return (ft_strdup(av[0]));
 	if (!(path = get_var(env->env, "PATH"))
@@ -125,5 +127,5 @@ int					exec_binary(t_env *env)
 	if (wait(&status) == -1)
 		return (-1);
 	free(path);
-	return (WIFEXITED(status));
+	return (WIFEXITED(status) ? WEXITSTATUS(status) : 1);
 }

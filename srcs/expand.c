@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:00:43 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/23 14:02:39 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/09/24 22:19:42 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,20 @@ char				**expansions(t_env *env, char **split)
 			if (split[i][j] == '$' && split[i][j + 1] && get_var(env->env, tmp))
 			{
 				if (!(split[i] = expand_var(env, split[i], tmp, j)))
+				{
+					free(tmp);
 					return (NULL);
+				}
 				free(tmp);
 				j = 0;
 				continue ;
 			}
 			else if (split[i][j] == '~' && j == 0
 				&& !(split[i] = expand_tilde(env, split[i], j)))
+			{
+				free(tmp);
 				return (NULL);
+			}
 			free(tmp);
 			j++;
 		}

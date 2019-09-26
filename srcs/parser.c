@@ -6,17 +6,35 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:01:06 by gedemais          #+#    #+#             */
-/*   Updated: 2019/09/25 20:22:52 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/09/26 00:59:46 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static inline char	**make_split(char *cmd)
+{
+	char		**dest;
+	char		*tmp;
+	unsigned int	i;
+
+	i = 0;
+	if (!(tmp = ft_strtrim(cmd)))
+		return (NULL);
+	if (!(dest = ft_strsplit(tmp, " \t")))
+	{
+		free(tmp);
+		return (NULL);
+	}
+	free(tmp);
+	return (dest);
+}
+
 static inline int	parse_cmd(t_env *env, char *cmd)
 {
 	int	ret;
 
-	if (!(env->split = ft_strsplit(cmd, " \t"))
+	if (!(env->split = make_split(cmd))
 		|| !(env->split = expansions(env, env->split)))
 		return (-1);
 	ret = builtins(env);
@@ -25,6 +43,8 @@ static inline int	parse_cmd(t_env *env, char *cmd)
 	else if (ret == 2 && !(env->split = free_ctab(env->split)))
 		return (1);
 	ret = exec_binary(env);
+	if (ret == 1)
+		return (ret);
 	if ((ret == -1 || ret == 1) && !(env->split = free_ctab(env->split)))
 		return (ret == -1 ? -1 : 0);
 	else if (ret == 2)
@@ -39,22 +59,6 @@ static inline int	parse_cmd(t_env *env, char *cmd)
 	return (0);
 }
 
-static inline char	**make_semisplit(t_env *env)
-{
-	char			**dest;
-	unsigned int	i;
-
-	i = 0;
-	if (!(dest = ft_strsplit(env->input, ";")))
-		return (NULL);
-	while (dest[i])
-	{
-		printf("dest[%u] = |%s|\n", i, dest[i]);
-		i++;
-	}
-	return (dest);
-}
-
 int					parser(t_env *env)
 {
 	unsigned int	i;
@@ -65,7 +69,7 @@ int					parser(t_env *env)
 	err = false;
 	if (!env->input || env->input[0] == '\0')
 		return (0);
-	if (!(env->semisplit = make_semisplit(env)))
+	if (!(env->semisplit = ft_strsplit(env->input, ";")))
 		return (-1);
 	while (env->semisplit[i])
 	{
